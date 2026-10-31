@@ -213,7 +213,8 @@ export default function ComplaintDraftCard({ draft, onSubmitted }) {
             Open in Form
           </button>
         </div>
-      )}
+      </div>
+    )}
 
       {/* Error state */}
       {submitError && (
