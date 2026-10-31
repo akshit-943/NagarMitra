@@ -6,6 +6,7 @@ import transparencyRoutes from './transparencyRoutes.js';
 import authRoutes from './authRoutes.js';
 import verificationRoutes from './verificationRoutes.js';
 import citizenRoutes from './citizenRoutes.js';
+import assistantRoutes from './assistantRoutes.js';
 
 const router = Router();
 
@@ -17,5 +18,6 @@ router.use('/citizen', citizenRoutes);
 router.use('/complaints', complaintRoutes);
 router.use('/master-issues', masterIssueRoutes);
 router.use('/transparency', transparencyRoutes);
+router.use('/assistant', assistantRoutes);
 
 export default router;
