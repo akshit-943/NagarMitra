@@ -14,6 +14,7 @@ import CitizenRegisterPage from './pages/CitizenRegisterPage';
 import PersonalCitizenDashboard from './pages/PersonalCitizenDashboard';
 import ReportIssueModal from './components/ReportIssueModal';
 import ComplaintDetailsModal from './components/ComplaintDetailsModal';
+import CivicAssistant from './components/assistant/CivicAssistant';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 
 function AppContent() {
@@ -90,6 +91,9 @@ function AppContent() {
         isOpen={Boolean(selectedComplaintId)}
         onClose={() => setSelectedComplaintId(null)}
       />
+
+      {/* Global Conversational AI Assistant */}
+      <CivicAssistant />
 
       {/* Minimal Editorial Footer (rendered on content views, omitted on focused auth cards) */}
       {!['authority-login', 'citizen-login', 'citizen-register', 'citizen-entry'].includes(activeTab) && (
