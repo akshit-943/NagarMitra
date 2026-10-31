@@ -21,10 +21,17 @@ import {
  * @param {Function} [props.onSubmitted] - Optional callback after successful submission
  */
 export default function ComplaintDraftCard({ draft, onSubmitted }) {
-  const { submitComplaint, setIsSubmitModalOpen, setSelectedComplaintId } = useCivic();
+  const {
+    submitComplaint,
+    setIsSubmitModalOpen,
+    setSelectedComplaintId,
+    isCitizenAuthenticated,
+    citizenUser,
+  } = useCivic();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionResult, setSubmissionResult] = useState(null);
   const [submitError, setSubmitError] = useState(null);
+  const [guestPhone, setGuestPhone] = useState('');
 
   if (!draft) return null;
 
@@ -53,12 +60,22 @@ export default function ComplaintDraftCard({ draft, onSubmitted }) {
     setSubmitError(null);
 
     try {
+      const activePhone = isCitizenAuthenticated ? citizenUser?.phone : guestPhone.trim();
+
+      if (!isCitizenAuthenticated && (!activePhone || activePhone.length < 10)) {
+        setSubmitError('Please enter a valid 10-digit mobile number for dispatch updates, or click "Open in Form".');
+        setIsSubmitting(false);
+        return;
+      }
+
       const payload = {
         title: draft.title || 'Civic Grievance',
         description: draft.description || draft.title || '',
         category: normalizeCategory(draft.category),
         urgency: mapSeverityToUrgency(draft.severity),
         address: draft.address || 'Address captured via Civic Assistant',
+        phone: activePhone,
+        verifiedPhone: activePhone,
       };
 
       const result = await submitComplaint(payload);
@@ -149,14 +166,31 @@ export default function ComplaintDraftCard({ draft, onSubmitted }) {
           </button>
         </div>
       ) : (
-        /* Action Buttons */
-        <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-          <button
-            type="button"
-            disabled={isSubmitting}
-            onClick={handleSubmitDirectly}
-            className="flex-1 py-1.5 px-3 rounded-lg bg-[#191B1D] hover:bg-[#2C3035] text-white text-[11px] font-medium flex items-center justify-center gap-1.5 shadow-sm transition-colors cursor-pointer disabled:opacity-50"
-          >
+        /* Action Buttons & Guest Phone Input */
+        <div className="pt-2 space-y-2">
+          {!isCitizenAuthenticated && (
+            <div>
+              <label className="block text-[10px] font-medium text-[#7E828B] mb-1">
+                Mobile Number (for SMS & incident tracking)
+              </label>
+              <input
+                type="tel"
+                value={guestPhone}
+                onChange={(e) => setGuestPhone(e.target.value)}
+                placeholder="e.g. 9876543210"
+                maxLength={10}
+                className="w-full px-2.5 py-1.5 text-xs bg-[#F7F7F4] border border-[#E6E5DE] rounded-lg focus:outline-none focus:border-[#191B1D] font-mono"
+              />
+            </div>
+          )}
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            <button
+              type="button"
+              disabled={isSubmitting}
+              onClick={handleSubmitDirectly}
+              className="flex-1 py-1.5 px-3 rounded-lg bg-[#191B1D] hover:bg-[#2C3035] text-white text-[11px] font-medium flex items-center justify-center gap-1.5 shadow-sm transition-colors cursor-pointer disabled:opacity-50"
+            >
             {isSubmitting ? (
               <>
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />

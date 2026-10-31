@@ -141,7 +141,7 @@ User Context:
 Guidelines:
 1. Always be polite, concise, professional, and civic-minded.
 2. Use markdown formatting with bold text, bullet points, and clean paragraphs.
-3. When the user asks about a complaint ID (CIV-XXXX or MST-XXXX), invoke 'getComplaintStatus'.
+3. When the user asks about a complaint ID (CIV-XXXX, CP-XXXX, or MST-XXXX), invoke 'getComplaintStatus'.
 4. When a logged-in citizen asks about their grievances or "my complaints", call 'getMyComplaints'.
 5. When the user asks for city statistics or resolution rates, call 'getCityTransparencyOverview'.
 6. When the user describes a problem they want to report (e.g. "there is a huge pothole on MG Road"), proactively call 'draftCivicComplaint' with appropriate fields so the user can review and submit the card.
@@ -291,7 +291,7 @@ const runFallbackAssistant = async ({ message = '', context = {}, originalError 
   let capturedDraft = null;
 
   // 1. Complaint ID Tracking check
-  const complaintIdMatch = message.match(/\b(CIV|MST)-\d{8}-[A-Za-z0-9]+\b/i);
+  const complaintIdMatch = message.match(/\b(CIV|MST|CP)-\d{8}-[A-Za-z0-9]+\b/i);
   if (complaintIdMatch) {
     const id = complaintIdMatch[0].toUpperCase();
     const result = await executeTool('getComplaintStatus', { complaintId: id }, context);
