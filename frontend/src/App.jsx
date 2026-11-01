@@ -103,7 +103,7 @@ function AppContent() {
               <div className="space-y-2 md:col-span-2 max-w-sm">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-[#191B1D]" />
-                  <span className="font-semibold text-sm text-[#191B1D]">CivicPulse AI</span>
+                  <span className="font-semibold text-sm text-[#191B1D]">NagarMitra</span>
                 </div>
                 <p className="text-xs text-[#7E828B] leading-relaxed">
                   Intelligent civic infrastructure reporting, triaging, and municipal accountability platform. Designed for modern cities with restrained editorial clarity.
@@ -166,11 +166,10 @@ function AppContent() {
 
             <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#A2A6B0]">
               <div>
-                &copy; {new Date().getFullYear()} CivicPulse AI Technologies Inc. All rights reserved.
+                &copy; {new Date().getFullYear()} NagarMitra. All rights reserved.
               </div>
               <div className="flex items-center gap-4">
                 <span>Warm Off-White &bull; Deep Charcoal &bull; Soft Lime</span>
-                <span>v2.0 Design System</span>
               </div>
             </div>
           </div>
