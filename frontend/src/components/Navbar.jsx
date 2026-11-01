@@ -73,14 +73,14 @@ export default function Navbar() {
         </div>
 
         {/* Minimal Navigation Tabs */}
-        <nav className="hidden lg:flex items-center bg-[#F0EFEA] p-1 rounded-full border border-[#E6E5DE]">
+        <nav className="hidden md:flex items-center bg-[#F0EFEA] p-0.5 lg:p-1 rounded-full border border-[#E6E5DE] shrink-0">
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
+                className={`px-2.5 lg:px-4 py-1 lg:py-1.5 rounded-full text-[11px] lg:text-xs font-medium whitespace-nowrap transition-all ${
                   isActive
                     ? 'bg-[#191B1D] text-white shadow-xs'
                     : 'text-[#4B4E54] hover:text-[#191B1D]'
@@ -93,10 +93,10 @@ export default function Navbar() {
         </nav>
 
         {/* Actions & Profiles */}
-        <div className="hidden md:flex items-center gap-2.5">
+        <div className="hidden md:flex items-center gap-1.5 lg:gap-2.5 shrink-0">
           {/* Citizen Session Section */}
           {isCitizenAuthenticated && citizenUser ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 lg:gap-2">
               {/* Notification Bell */}
               <button
                 onClick={() => setActiveTab('dashboard')}
@@ -112,10 +112,10 @@ export default function Navbar() {
               {/* Citizen User Chip */}
               <button
                 onClick={() => setActiveTab('dashboard')}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F0EFEA] border border-[#E6E5DE] text-xs hover:border-[#191B1D] transition-colors"
+                className="flex items-center gap-1.5 px-2.5 lg:px-3 py-1.5 rounded-full bg-[#F0EFEA] border border-[#E6E5DE] text-xs hover:border-[#191B1D] transition-colors"
               >
                 <User className="w-3.5 h-3.5 text-[#191B1D]" />
-                <span className="font-medium text-[#191B1D] max-w-[100px] truncate">{citizenUser.name}</span>
+                <span className="font-medium text-[#191B1D] max-w-[80px] lg:max-w-[120px] truncate">{citizenUser.name}</span>
               </button>
 
               <Button
@@ -133,10 +133,10 @@ export default function Navbar() {
             <div className="flex items-center gap-1.5">
               <button
                 onClick={() => setActiveTab('authority')}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F2F8D5] border border-[#D2E873] text-xs text-[#3E520A] font-medium"
+                className="flex items-center gap-1.5 px-2.5 lg:px-3 py-1.5 rounded-full bg-[#F2F8D5] border border-[#D2E873] text-xs text-[#3E520A] font-medium"
               >
                 <Shield className="w-3.5 h-3.5 text-[#8CA81F]" />
-                <span className="max-w-[100px] truncate">{authorityUser.name}</span>
+                <span className="max-w-[80px] lg:max-w-[120px] truncate">{authorityUser.name}</span>
               </button>
               <Button
                 variant="ghost"
@@ -150,19 +150,19 @@ export default function Navbar() {
             </div>
           ) : (
             /* Unauthenticated Public Actions */
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 lg:gap-2">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setActiveTab('citizen-entry')}
-                className={activeTab === 'citizen-entry' || activeTab === 'citizen-login' || activeTab === 'citizen-register' ? 'border-[#191B1D] font-medium' : ''}
+                className={`whitespace-nowrap px-2.5 lg:px-3 text-xs ${activeTab === 'citizen-entry' || activeTab === 'citizen-login' || activeTab === 'citizen-register' ? 'border-[#191B1D] font-medium' : ''}`}
               >
                 Login / Sign Up
               </Button>
 
               <button
                 onClick={() => setActiveTab('authority-login')}
-                className={`text-xs px-2.5 py-1.5 rounded-lg text-[#7E828B] hover:text-[#191B1D] transition-colors ${
+                className={`text-xs px-2 lg:px-2.5 py-1.5 rounded-lg text-[#7E828B] hover:text-[#191B1D] transition-colors whitespace-nowrap ${
                   activeTab === 'authority-login' ? 'text-[#191B1D] font-semibold' : ''
                 }`}
               >
@@ -177,7 +177,7 @@ export default function Navbar() {
             size="sm"
             icon={PlusCircle}
             onClick={() => setIsSubmitModalOpen(true)}
-            className="ml-1"
+            className="ml-0.5 lg:ml-1 whitespace-nowrap px-2.5 lg:px-3.5"
           >
             Report an Issue
           </Button>
