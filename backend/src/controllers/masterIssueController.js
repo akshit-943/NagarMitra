@@ -24,6 +24,7 @@ import {
 } from '../data/officerDirectory.js';
 import { validateStatusTransition } from '../utils/statusTransitions.js';
 import { uploadBufferToCloudinary, isCloudinaryConfigured } from '../config/cloudinary.js';
+import { compareResolutionEvidence } from '../services/geminiResolutionService.js';
 
 /**
  * @route   GET /api/master-issues
@@ -738,6 +739,88 @@ export const uploadResolutionEvidenceEndpoint = async (req, res, next) => {
       );
     }
 
+    // Trigger automated Gemini AI Before-and-After comparative analysis
+    let aiAssessment = null;
+    try {
+      let beforeImageUrl = null;
+      let intakeDesc = masterIssue.title;
+
+      if (masterIssue.primaryComplaintId) {
+        const primary = await Complaint.findOne({ complaintId: masterIssue.primaryComplaintId })
+          .select('imageUrl description')
+          .lean();
+        if (primary) {
+          beforeImageUrl = primary.imageUrl;
+          if (primary.description) intakeDesc = primary.description;
+        }
+      }
+
+      if (!beforeImageUrl && masterIssue.associatedComplaintIds?.length > 0) {
+        const anyWithImg = await Complaint.findOne({
+          complaintId: { $in: masterIssue.associatedComplaintIds },
+          imageUrl: { $ne: null },
+        })
+          .select('imageUrl description')
+          .lean();
+        if (anyWithImg) {
+          beforeImageUrl = anyWithImg.imageUrl;
+          if (anyWithImg.description) intakeDesc = anyWithImg.description;
+        }
+      }
+
+      const afterImageUrl = uploadedEvidence[0]?.url || null;
+      const uploadedBuffer = req.files?.[0]?.buffer || null;
+      const uploadedMime = req.files?.[0]?.mimetype || 'image/jpeg';
+
+      const assessmentPromise = compareResolutionEvidence({
+        beforeImageUrl,
+        afterImageUrl,
+        afterBuffer: uploadedBuffer,
+        afterMimeType: uploadedMime,
+        category: masterIssue.category,
+        description: intakeDesc,
+        workDescription: finalDescription,
+      });
+
+      aiAssessment = await Promise.race([
+        assessmentPromise,
+        new Promise((resolve) => setTimeout(() => resolve(null), 5000)),
+      ]);
+
+      if (aiAssessment) {
+        masterIssue.aiResolutionAssessment = aiAssessment;
+        await masterIssue.save();
+
+        await recordActivity(masterIssue.masterIssueId, {
+          eventType: 'AiResolutionAssessment',
+          description: `AI Advisory Check: ${aiAssessment.summary} (${aiAssessment.repairQuality}, ${aiAssessment.confidenceScore}% confidence)`,
+          actor: 'CivicPulse AI',
+          isInternal: false,
+          metadata: aiAssessment,
+        });
+      } else {
+        assessmentPromise
+          .then(async (bgAssessment) => {
+            if (bgAssessment) {
+              await MasterIssue.updateOne(
+                { _id: masterIssue._id },
+                { $set: { aiResolutionAssessment: bgAssessment } }
+              );
+              await recordActivity(masterIssue.masterIssueId, {
+                eventType: 'AiResolutionAssessment',
+                description: `AI Advisory Check: ${bgAssessment.summary} (${bgAssessment.repairQuality}, ${bgAssessment.confidenceScore}% confidence)`,
+                actor: 'CivicPulse AI',
+                isInternal: false,
+                metadata: bgAssessment,
+              });
+            }
+          })
+          .catch((e) => console.warn('⚠️ [MasterIssue] BG AI resolution assessment error:', e.message));
+      }
+    } catch (aiErr) {
+      console.warn('⚠️ [MasterIssue] AI resolution comparison error:', aiErr.message);
+    }
+
     return res.status(200).json({
       success: true,
       message: `Resolution evidence uploaded successfully. Issue marked 'Resolution Submitted'.`,
@@ -747,7 +830,91 @@ export const uploadResolutionEvidenceEndpoint = async (req, res, next) => {
         resolutionEvidence: masterIssue.resolutionEvidence,
         resolutionDescription: masterIssue.resolutionDescription,
         verificationStatus: masterIssue.verificationStatus,
+        aiResolutionAssessment: masterIssue.aiResolutionAssessment || aiAssessment,
       },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @route   POST /api/master-issues/:id/assess-resolution
+ * @desc    On-demand re-assessment or evaluation of resolution evidence using Gemini
+ * @access  Public / Authority
+ */
+export const assessResolutionEndpoint = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const trimmedId = id ? id.trim() : '';
+    const query = trimmedId.match(/^[0-9a-fA-F]{24}$/)
+      ? { $or: [{ masterIssueId: trimmedId.toUpperCase() }, { _id: trimmedId }] }
+      : { masterIssueId: trimmedId.toUpperCase() };
+
+    const masterIssue = await MasterIssue.findOne(query);
+    if (!masterIssue) {
+      return res.status(404).json({ success: false, message: 'Master issue not found' });
+    }
+
+    if (!masterIssue.resolutionEvidence || masterIssue.resolutionEvidence.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'No resolution evidence photograph is available on this issue to assess.',
+      });
+    }
+
+    // Find intake photo
+    let beforeImageUrl = null;
+    let intakeDesc = masterIssue.title;
+
+    if (masterIssue.primaryComplaintId) {
+      const primary = await Complaint.findOne({ complaintId: masterIssue.primaryComplaintId })
+        .select('imageUrl description')
+        .lean();
+      if (primary) {
+        beforeImageUrl = primary.imageUrl;
+        if (primary.description) intakeDesc = primary.description;
+      }
+    }
+
+    if (!beforeImageUrl && masterIssue.associatedComplaintIds?.length > 0) {
+      const anyWithImg = await Complaint.findOne({
+        complaintId: { $in: masterIssue.associatedComplaintIds },
+        imageUrl: { $ne: null },
+      })
+        .select('imageUrl description')
+        .lean();
+      if (anyWithImg) {
+        beforeImageUrl = anyWithImg.imageUrl;
+        if (anyWithImg.description) intakeDesc = anyWithImg.description;
+      }
+    }
+
+    const afterImageUrl = masterIssue.resolutionEvidence[0]?.url || null;
+
+    const assessment = await compareResolutionEvidence({
+      beforeImageUrl,
+      afterImageUrl,
+      category: masterIssue.category,
+      description: intakeDesc,
+      workDescription: masterIssue.resolutionDescription,
+    });
+
+    masterIssue.aiResolutionAssessment = assessment;
+    await masterIssue.save();
+
+    await recordActivity(masterIssue.masterIssueId, {
+      eventType: 'AiResolutionAssessment',
+      description: `Manual AI Advisory Check: ${assessment.summary} (${assessment.repairQuality}, ${assessment.confidenceScore}% confidence)`,
+      actor: req.authority?.name || 'Municipal Supervisor',
+      isInternal: false,
+      metadata: assessment,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'AI before-and-after resolution assessment completed.',
+      data: assessment,
     });
   } catch (error) {
     next(error);

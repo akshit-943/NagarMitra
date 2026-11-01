@@ -252,6 +252,16 @@ export const verifyMasterIssueResolution = async (id, verificationData) => {
 };
 
 /**
+ * Request on-demand Gemini AI Before-and-After comparative assessment
+ * @param {string} id - Master Issue ID
+ * @returns {Promise<Object>}
+ */
+export const assessMasterIssueResolution = async (id) => {
+  const response = await apiClient.post(`/master-issues/${encodeURIComponent(id)}/assess-resolution`);
+  return response.data;
+};
+
+/**
  * Retrieve chronological activity timeline for a master issue
  * @param {string} id - Master Issue ID
  * @param {boolean} isCitizen - If true, strips confidential internal notes

@@ -171,10 +171,11 @@ export const runAssistantTurn = async ({ message, history = [], context = {} }) 
 
   // Model fallback chain: primary model with seamless fallbacks
   const candidateModels = [
-    process.env.GEMINI_MODEL || 'gemini-3.5-flash',
+    process.env.GEMINI_MODEL,
     'gemini-3.5-flash-lite',
-    'gemini-3.8-flash',
-    'gemini-3-flash-preview',
+    'gemini-flash-latest',
+    'gemini-3.5-flash',
+    'gemini-3.1-flash-lite',
   ].filter(Boolean);
 
   // Build contents array from recent history (up to last 10 turns)

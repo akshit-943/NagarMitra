@@ -14,6 +14,7 @@ import {
   getCivicHotspotsEndpoint,
   getPrioritySummaryEndpoint,
   resolveDuplicateEndpoint,
+  assessResolutionEndpoint,
 } from '../controllers/masterIssueController.js';
 import { handleResolutionEvidenceUpload } from '../middleware/upload.js';
 import { authenticateAuthority } from '../middleware/auth.js';
@@ -44,5 +45,6 @@ router.post('/:id/resolve-duplicate', authenticateAuthority, resolveDuplicateEnd
 // Public Community Actions (Citizens can support or submit verification feedback)
 router.post('/:id/support', optionalCitizenAuth, supportMasterIssueEndpoint);
 router.post('/:id/verify', optionalCitizenAuth, verifyResolutionEndpoint);
+router.post('/:id/assess-resolution', optionalCitizenAuth, assessResolutionEndpoint);
 
 export default router;

@@ -264,6 +264,24 @@ const masterIssueSchema = new mongoose.Schema(
         },
       ],
     },
+    aiResolutionAssessment: {
+      status: {
+        type: String,
+        enum: ['Pending', 'Completed', 'Failed', 'Skipped', 'NoImages'],
+        default: 'Pending',
+      },
+      appearsFixed: { type: Boolean, default: null },
+      confidenceScore: { type: Number, default: null },
+      repairQuality: {
+        type: String,
+        enum: ['Satisfactory', 'Partial', 'Inadequate', 'Inconclusive', null],
+        default: null,
+      },
+      summary: { type: String, default: '' },
+      observations: { type: [String], default: [] },
+      assessedAt: { type: Date, default: null },
+      modelUsed: { type: String, default: null },
+    },
     internalNotes: [
       {
         note: { type: String, required: true },

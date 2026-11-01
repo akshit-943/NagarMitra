@@ -9,6 +9,7 @@ import {
   addMasterIssueNote,
   uploadResolutionEvidence,
   verifyMasterIssueResolution,
+  assessMasterIssueResolution,
   getMasterIssueActivity,
   getDemoOfficers,
 } from '../services/complaintService';
@@ -42,6 +43,8 @@ import {
   Sliders,
   Send,
   Eye,
+  Sparkles,
+  ShieldCheck,
 } from 'lucide-react';
 
 export default function MasterIssueDetailsPage({ masterIssueId, onBack }) {
@@ -90,6 +93,7 @@ export default function MasterIssueDetailsPage({ masterIssueId, onBack }) {
   // Citizen Verification State
   const [verificationComment, setVerificationComment] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
+  const [isAssessingResolution, setIsAssessingResolution] = useState(false);
 
   const fetchDetails = async () => {
     if (!masterIssueId) {
@@ -291,6 +295,22 @@ export default function MasterIssueDetailsPage({ masterIssueId, onBack }) {
       alert(`Verification error: ${err.message}`);
     } finally {
       setIsVerifying(false);
+    }
+  };
+
+  // Trigger on-demand Gemini AI Before & After verification comparison
+  const handleTriggerAiAssessment = async () => {
+    if (!issue?.masterIssueId || isAssessingResolution) return;
+    setIsAssessingResolution(true);
+    try {
+      const res = await assessMasterIssueResolution(issue.masterIssueId);
+      if (res?.success && res.data) {
+        setIssue(res.data);
+      }
+    } catch (err) {
+      alert(`AI assessment error: ${err.message || 'Unable to run AI resolution check.'}`);
+    } finally {
+      setIsAssessingResolution(false);
     }
   };
 
@@ -917,6 +937,75 @@ export default function MasterIssueDetailsPage({ masterIssueId, onBack }) {
                 )}
               </div>
             </div>
+
+            {/* AI Visual Resolution Assessment (Advisory Check) */}
+            {issue?.aiResolutionAssessment && (
+              <div className="p-4 rounded-2xl bg-gradient-to-br from-white to-[#F9F9F6] border border-[#E6E5DE] shadow-xs space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-[#F0EFEA]">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-[#8CA81F]" />
+                    <span className="font-semibold text-xs text-[#191B1D]">
+                      AI Visual Resolution Assessment (Gemini Multimodal)
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {issue.aiResolutionAssessment.appearsFixed !== null ? (
+                      <span
+                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold font-mono border ${
+                          issue.aiResolutionAssessment.appearsFixed
+                            ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                            : issue.aiResolutionAssessment.repairQuality === 'Partial'
+                            ? 'bg-amber-50 text-amber-800 border-amber-200'
+                            : 'bg-rose-50 text-rose-800 border-rose-200'
+                        }`}
+                      >
+                        {issue.aiResolutionAssessment.appearsFixed
+                          ? `✓ Appears Fixed (${issue.aiResolutionAssessment.confidenceScore}% Confidence)`
+                          : issue.aiResolutionAssessment.repairQuality === 'Partial'
+                          ? `⚠ Partial Fix (${issue.aiResolutionAssessment.confidenceScore}% Confidence)`
+                          : `✕ Defect May Persist (${issue.aiResolutionAssessment.confidenceScore}% Confidence)`}
+                      </span>
+                    ) : (
+                      <span className="px-2 py-0.5 rounded text-[10px] bg-slate-100 text-slate-700 border border-slate-200">
+                        {issue.aiResolutionAssessment.repairQuality || 'Pending Check'}
+                      </span>
+                    )}
+
+                    {resolutionEvidence.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={handleTriggerAiAssessment}
+                        disabled={isAssessingResolution}
+                        className="inline-flex items-center gap-1 text-[10px] font-medium text-[#5A7314] hover:text-[#3E520A] bg-white border border-[#E6E5DE] px-2 py-0.5 rounded-md hover:bg-[#F9F9F6] transition-colors disabled:opacity-50"
+                        title="Re-run Gemini AI comparative analysis on before/after photos"
+                      >
+                        <RefreshCw className={`w-2.5 h-2.5 ${isAssessingResolution ? 'animate-spin' : ''}`} />
+                        <span>{isAssessingResolution ? 'Analyzing...' : 'Re-evaluate'}</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <p className="text-xs text-[#191B1D] font-medium leading-relaxed">
+                  {issue.aiResolutionAssessment.summary || 'AI has evaluated the photographic evidence.'}
+                </p>
+
+                {issue.aiResolutionAssessment.observations?.length > 0 && (
+                  <ul className="text-[11px] text-[#4B4E54] space-y-0.5 pl-4 list-disc">
+                    {issue.aiResolutionAssessment.observations.map((obs, idx) => (
+                      <li key={idx} className="leading-normal">{obs}</li>
+                    ))}
+                  </ul>
+                )}
+
+                <div className="flex items-center gap-1.5 pt-1 border-t border-[#F0EFEA] text-[10px] text-[#7E828B]">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#5A7314] shrink-0" />
+                  <span>
+                    <strong>Human-in-the-Loop Safeguard:</strong> This AI assessment is purely advisory. Citizens retain the final authority to confirm or dispute this resolution below.
+                  </span>
+                </div>
+              </div>
+            )}
 
             {/* Officer Evidence Upload Form */}
             <form onSubmit={handleUploadEvidence} className="p-4 rounded-2xl bg-[#F9F9F6] border border-[#E6E5DE] space-y-3">

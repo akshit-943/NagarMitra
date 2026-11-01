@@ -662,6 +662,66 @@ export default function ComplaintDetailsModal({ complaintId, isOpen, onClose }) 
                 </div>
               )}
 
+              {/* AI Before-and-After Resolution Verification Check (Advisory Only) */}
+              {masterIssue?.aiResolutionAssessment && (
+                <div className="p-4 rounded-xl bg-gradient-to-br from-white to-[#F9F9F6] border border-[#E6E5DE] shadow-xs space-y-2.5">
+                  <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-[#F0EFEA]">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-[#8CA81F]" />
+                      <span className="font-semibold text-xs text-[#191B1D]">
+                        AI Visual Resolution Assessment
+                      </span>
+                      <span className="text-[10px] bg-[#EBEAE4] px-1.5 py-0.5 rounded text-[#4B4E54] font-medium">
+                        Advisory
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1.5">
+                      {masterIssue.aiResolutionAssessment.appearsFixed !== null ? (
+                        <span
+                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold font-mono border ${
+                            masterIssue.aiResolutionAssessment.appearsFixed
+                              ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                              : masterIssue.aiResolutionAssessment.repairQuality === 'Partial'
+                              ? 'bg-amber-50 text-amber-800 border-amber-200'
+                              : 'bg-rose-50 text-rose-800 border-rose-200'
+                          }`}
+                        >
+                          {masterIssue.aiResolutionAssessment.appearsFixed
+                            ? `✓ Appears Fixed (${masterIssue.aiResolutionAssessment.confidenceScore}% Confidence)`
+                            : masterIssue.aiResolutionAssessment.repairQuality === 'Partial'
+                            ? `⚠ Partial Fix (${masterIssue.aiResolutionAssessment.confidenceScore}% Confidence)`
+                            : `✗ Defect May Persist (${masterIssue.aiResolutionAssessment.confidenceScore}% Confidence)`}
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded text-[10px] bg-slate-100 text-slate-700 border border-slate-200">
+                          {masterIssue.aiResolutionAssessment.repairQuality || 'Pending Check'}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-[#191B1D] font-medium leading-relaxed">
+                    {masterIssue.aiResolutionAssessment.summary || 'AI has evaluated the photographic evidence.'}
+                  </p>
+
+                  {masterIssue.aiResolutionAssessment.observations?.length > 0 && (
+                    <ul className="text-[11px] text-[#4B4E54] space-y-0.5 pl-4 list-disc">
+                      {masterIssue.aiResolutionAssessment.observations.map((obs, idx) => (
+                        <li key={idx} className="leading-normal">{obs}</li>
+                      ))}
+                    </ul>
+                  )}
+
+                  <div className="flex items-center gap-1.5 text-[10px] text-[#7E828B] pt-1 border-t border-[#F0EFEA]/80">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#8CA81F] shrink-0" />
+                    <span>
+                      <strong>Human-in-the-Loop Safeguard:</strong> This AI assessment is purely advisory. Community citizens retain final decision power to confirm or dispute.
+                    </span>
+                  </div>
+                </div>
+              )}
+
               {/* Citizen Verification Console */}
               <div className="pt-2 border-t border-[#E6E5DE] space-y-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
