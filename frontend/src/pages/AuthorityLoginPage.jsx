@@ -13,6 +13,8 @@ import {
   Building2,
   KeyRound,
   Info,
+  ShieldCheck,
+  ArrowRight,
 } from 'lucide-react';
 
 export default function AuthorityLoginPage() {
@@ -47,6 +49,23 @@ export default function AuthorityLoginPage() {
     } catch (err) {
       setErrorMessage(
         err.message || 'Authentication failed. Please verify your Authority ID and password.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDemoEvaluatorLogin = async () => {
+    setErrorMessage(null);
+    try {
+      setIsSubmitting(true);
+      await loginAuthorityUser({
+        authorityId: 'AUTH-ADMIN-01',
+        password: 'CivicPulse@2026',
+      });
+    } catch (err) {
+      setErrorMessage(
+        err.message || 'Demo authentication failed. Please check network connectivity.'
       );
     } finally {
       setIsSubmitting(false);
@@ -149,6 +168,24 @@ export default function AuthorityLoginPage() {
           </div>
           <p className="text-[11px] text-[#4B4E54] leading-relaxed">
             Public users cannot self-register as authorities. Accounts are provisioned through a controlled municipal vetting process. Citizens can freely browse issues and submit complaints on the Citizen Portal without login.
+          </p>
+        </div>
+
+        {/* Judge / Evaluator Instant Command Access */}
+        <div className="pt-2 border-t border-[#F0EFEA] space-y-2">
+          <button
+            type="button"
+            onClick={handleDemoEvaluatorLogin}
+            disabled={isSubmitting}
+            className="w-full py-2.5 px-4 rounded-xl bg-[#F2F8D5] hover:bg-[#E4F2B0] text-[#3E520A] border border-[#D2E873] text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-xs active:scale-[0.99] disabled:opacity-50"
+            title="Instant access for judges and evaluators to explore the Municipal Command Portal"
+          >
+            <ShieldCheck className="w-4 h-4 text-[#5A7314]" />
+            <span>{isSubmitting ? 'Entering Municipal Command...' : 'Explore Municipal Command (Judge / Evaluator Access)'}</span>
+            <ArrowRight className="w-3.5 h-3.5 text-[#5A7314]" />
+          </button>
+          <p className="text-[10px] text-center text-[#7E828B]">
+            Quick access for hackathon judges &amp; evaluators to inspect live incident triage, dispatched field crews, and resolution verification.
           </p>
         </div>
       </Card>
