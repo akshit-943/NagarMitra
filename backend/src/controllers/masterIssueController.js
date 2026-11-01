@@ -794,7 +794,7 @@ export const uploadResolutionEvidenceEndpoint = async (req, res, next) => {
         await recordActivity(masterIssue.masterIssueId, {
           eventType: 'AiResolutionAssessment',
           description: `AI Advisory Check: ${aiAssessment.summary} (${aiAssessment.repairQuality}, ${aiAssessment.confidenceScore}% confidence)`,
-          actor: 'CivicPulse AI',
+          actor: 'NagarMitra AI',
           isInternal: false,
           metadata: aiAssessment,
         });
@@ -809,7 +809,7 @@ export const uploadResolutionEvidenceEndpoint = async (req, res, next) => {
               await recordActivity(masterIssue.masterIssueId, {
                 eventType: 'AiResolutionAssessment',
                 description: `AI Advisory Check: ${bgAssessment.summary} (${bgAssessment.repairQuality}, ${bgAssessment.confidenceScore}% confidence)`,
-                actor: 'CivicPulse AI',
+                actor: 'NagarMitra AI',
                 isInternal: false,
                 metadata: bgAssessment,
               });

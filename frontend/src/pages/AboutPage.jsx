@@ -28,7 +28,7 @@ export default function AboutPage() {
           Intelligent infrastructure for responsive cities.
         </h1>
         <p className="text-base text-[#4B4E54] leading-relaxed">
-          CivicPulse AI bridges residents and municipal departments with clarity, transparency, and automated dispatch intelligence.
+          NagarMitra bridges residents and municipal departments with clarity, transparency, and automated dispatch intelligence.
         </p>
       </div>
 

@@ -4,7 +4,7 @@
  */
 
 export const MUNICIPAL_KNOWLEDGE = {
-  appName: 'CivicPulse AI',
+  appName: 'NagarMitra',
   description: 'AI-Powered Municipal Grievance and Infrastructure Intelligence Platform for Indian Cities.',
   departments: [
     {
@@ -68,12 +68,12 @@ export const MUNICIPAL_KNOWLEDGE = {
     {
       topic: 'how to report',
       question: 'How do I submit a civic grievance?',
-      answer: 'Click the "Report Issue" button at the top of the portal. Provide a title, clear description, exact location or pin on the map, and optionally upload a photograph. CivicPulse AI will automatically analyze severity, assign the relevant department, and detect any existing duplicate complaints.',
+      answer: 'Click the "Report Issue" button at the top of the portal. Provide a title, clear description, exact location or pin on the map, and optionally upload a photograph. NagarMitra will automatically analyze severity, assign the relevant department, and detect any existing duplicate complaints.',
     },
     {
       topic: 'duplicate detection',
       question: 'What is a Master Issue and how does duplicate grouping work?',
-      answer: 'When multiple citizens report the same issue (e.g. the same pothole or water leak within a 500-meter radius), CivicPulse AI groups them under a single Master Issue (MST-XXXXXXXX). This consolidates citizen upvotes, alerts municipal dispatchers to high-impact locations, and avoids dispatching duplicate field crews.',
+      answer: 'When multiple citizens report the same issue (e.g. the same pothole or water leak within a 500-meter radius), NagarMitra groups them under a single Master Issue (MST-XXXXXXXX). This consolidates citizen upvotes, alerts municipal dispatchers to high-impact locations, and avoids dispatching duplicate field crews.',
     },
     {
       topic: 'tracking',

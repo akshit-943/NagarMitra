@@ -12,8 +12,8 @@ export const generateCivicImpactPdf = (reportData, res) => {
     margin: 40,
     size: 'A4',
     info: {
-      Title: 'CivicPulse AI — Municipal Civic Impact & Transparency Report',
-      Author: 'CivicPulse AI Municipal Intelligence Platform',
+      Title: 'NagarMitra — Municipal Civic Impact & Transparency Report',
+      Author: 'NagarMitra Municipal Intelligence Platform',
       Subject: 'Public Civic Grievance & SLA Performance Audit',
     },
   });
@@ -52,7 +52,7 @@ export const generateCivicImpactPdf = (reportData, res) => {
   doc.circle(65, 70, 5).fill(colors.accent);
 
   doc.fillColor(colors.primary).fontSize(16).font('Helvetica-Bold')
-    .text('CivicPulse AI', 90, 55);
+    .text('NagarMitra', 90, 55);
 
   doc.fillColor(colors.secondary).fontSize(9).font('Helvetica')
     .text('Municipal Civic Grievance & Public Impact Intelligence Report', 90, 74);
@@ -216,7 +216,7 @@ export const generateCivicImpactPdf = (reportData, res) => {
   doc.rect(40, 750, 515, 45).fill('#F0EFEA').stroke(colors.border);
   doc.fillColor(colors.muted).fontSize(7).font('Helvetica')
     .text(
-      'CivicPulse AI Public Transparency Engine • Generated from live verified database records.',
+      'NagarMitra Public Transparency Engine • Generated from live verified database records.',
       50, 756
     )
     .text(

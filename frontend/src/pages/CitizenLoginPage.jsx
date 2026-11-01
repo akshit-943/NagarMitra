@@ -207,7 +207,7 @@ export default function CitizenLoginPage() {
             </div>
 
             <p className="text-xs text-[#4B4E54] leading-relaxed">
-              CivicPulse AI respects privacy and operates without compulsory third-party SMS or email trackers.
+              NagarMitra respects privacy and operates without compulsory third-party SMS or email trackers.
             </p>
 
             <form onSubmit={handleForgotPassword} className="space-y-3">

@@ -1094,7 +1094,7 @@ export default function PublicTransparencyDashboard() {
                 Deterministic Algorithmic Allocation Engine (Zero AI Quota Consumption)
               </span>
               <p>
-                CivicPulse evaluates empirical backlog ratios, unresolved high-priority incidents, and recurring volume trajectories to calculate explainable, rule-based municipal resource recommendations.
+                NagarMitra evaluates empirical backlog ratios, unresolved high-priority incidents, and recurring volume trajectories to calculate explainable, rule-based municipal resource recommendations.
               </p>
             </div>
           </div>

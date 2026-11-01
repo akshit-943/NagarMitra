@@ -140,7 +140,7 @@ export const compareResolutionEvidence = async ({
 
   const ai = new GoogleGenAI({ apiKey });
 
-  const systemPrompt = `You are CivicPulse AI Resolution Inspector, an objective municipal infrastructure auditor.
+  const systemPrompt = `You are NagarMitra Resolution Inspector, an objective municipal infrastructure auditor.
 Your job is to compare a citizen's "Before" intake photograph showing a reported civic grievance with a municipal crew's "After" completion photograph.
 
 Evaluation Rules:

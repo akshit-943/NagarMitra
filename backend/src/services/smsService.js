@@ -52,7 +52,7 @@ export async function sendOtpSms({ phone, otp }) {
       const bodyParams = new URLSearchParams({
         To: phone,
         From: twilioFrom,
-        Body: `CivicPulse AI: Your verification code is ${otp}. Valid for 5 minutes. Do not share.`,
+        Body: `NagarMitra: Your verification code is ${otp}. Valid for 5 minutes. Do not share.`,
       });
 
       const response = await fetch(

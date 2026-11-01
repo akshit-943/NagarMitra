@@ -18,7 +18,7 @@ export default function CitizenEntryPage() {
           How would you like to participate?
         </h1>
         <p className="text-sm text-[#7E828B] leading-relaxed">
-          CivicPulse AI empowers everyone. Access your personalized municipal dashboard or report neighborhood concerns immediately as a guest.
+          NagarMitra empowers everyone. Access your personalized municipal dashboard or report neighborhood concerns immediately as a guest.
         </p>
       </div>
 
@@ -38,7 +38,7 @@ export default function CitizenEntryPage() {
                 Welcome Back
               </h2>
               <p className="text-xs text-[#4B4E54] leading-relaxed">
-                Log in to access your personal CivicPulse dashboard, track your complaints, and follow local civic issues.
+                Log in to access your personal NagarMitra dashboard, track your complaints, and follow local civic issues.
               </p>
             </div>
 
@@ -70,7 +70,7 @@ export default function CitizenEntryPage() {
             </Button>
             <div className="text-center">
               <span className="text-xs text-[#7E828B]">
-                New to CivicPulse?{' '}
+                New to NagarMitra?{' '}
                 <button
                   onClick={() => setActiveTab('citizen-register')}
                   className="font-medium text-[#191B1D] hover:underline"

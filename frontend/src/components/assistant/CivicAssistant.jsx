@@ -27,7 +27,7 @@ export default function CivicAssistant() {
           type="button"
           onClick={toggleOpen}
           aria-expanded={isOpen}
-          aria-label={isOpen ? 'Close CivicPulse Assistant' : 'Open CivicPulse Assistant'}
+          aria-label={isOpen ? 'Close NagarMitra Assistant' : 'Open NagarMitra Assistant'}
           className={`group flex items-center gap-2.5 px-3.5 py-2.5 rounded-full shadow-lg transition-all duration-300 cursor-pointer ${
             isOpen
               ? 'bg-[#191B1D] text-white ring-2 ring-[#D2E873]'
@@ -47,7 +47,7 @@ export default function CivicAssistant() {
 
           {/* Label */}
           <span className="text-xs font-semibold tracking-tight pr-1 hidden sm:inline-block">
-            Civic Assistant
+            NagarMitra Assistant
           </span>
 
           <Sparkles className="w-3.5 h-3.5 text-[#D2E873] hidden sm:inline-block" />

@@ -66,7 +66,7 @@ export default function ChatWindow({
           <div>
             <div className="flex items-center gap-1.5">
               <h3 className="font-semibold text-xs tracking-tight text-white">
-                CivicPulse Assistant
+                NagarMitra Assistant
               </h3>
               {getRoleBadge()}
             </div>

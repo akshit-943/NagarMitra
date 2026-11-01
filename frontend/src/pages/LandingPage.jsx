@@ -99,7 +99,7 @@ export default function LandingPage() {
           </h1>
 
           <p className="text-base sm:text-lg text-[#4B4E54] max-w-xl font-normal leading-relaxed">
-            CivicPulse bridges residents and municipal departments with clarity. Report neighborhood concerns in seconds, track automated dispatch in real time, and monitor verifiable resolution metrics.
+            NagarMitra bridges residents and municipal departments with clarity. Report neighborhood concerns in seconds, track automated dispatch in real time, and monitor verifiable resolution metrics.
           </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">

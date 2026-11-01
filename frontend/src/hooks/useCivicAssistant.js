@@ -4,7 +4,7 @@ import { sendChatMessage, fetchChatHistory, clearChatHistory } from '../services
 const WELCOME_MESSAGE = {
   id: 'welcome-001',
   sender: 'assistant',
-  text: `Hello! I am **CivicPulse Assistant**, your Gemini-powered municipal civic aide. 🏛️\n\nI can help you:\n- **Track grievances** in real-time (enter any \`CIV-XXXX\` ID)\n- **Draft a complaint** for any civic problem\n- Check **citywide resolution statistics** & department response times\n- Find **emergency & helpline numbers**\n\nHow can I help you today?`,
+  text: `Hello! I am **NagarMitra Assistant**, your AI-powered municipal civic aide. 🏛️\n\nI can help you:\n- **Track grievances** in real-time (enter any \`CIV-XXXX\` ID)\n- **Draft a complaint** for any civic problem\n- Check **citywide resolution statistics** & department response times\n- Find **emergency & helpline numbers**\n\nHow can I help you today?`,
   toolCalls: [],
   timestamp: new Date(),
 };

@@ -64,7 +64,7 @@ export default function Navbar() {
           </div>
           <div>
             <span className="font-semibold text-base tracking-tight text-[#191B1D] block leading-none">
-              CivicPulse<span className="font-editorial italic font-normal text-sm text-[#7E828B] ml-1">AI</span>
+              NagarMitra
             </span>
             <span className="text-[10px] text-[#7E828B] font-medium tracking-wide uppercase">
               Civic Technology

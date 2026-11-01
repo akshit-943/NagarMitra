@@ -131,7 +131,7 @@ const getSystemInstruction = (context = {}) => {
   const userName = context.user?.name || (role === 'citizen' ? 'Citizen' : role === 'authority' ? 'Officer' : 'Visitor');
   const userDept = context.user?.department ? ` (Department: ${context.user.department})` : '';
 
-  return `You are CivicPulse Assistant, the intelligent municipal conversational AI for CivicPulse AI.
+  return `You are NagarMitra Assistant, the intelligent municipal conversational AI for NagarMitra.
 Your purpose is to provide civic assistance, real-time grievance tracking, municipal transparency information, and help citizens draft complaints for review.
 
 User Context:
@@ -449,7 +449,7 @@ const runFallbackAssistant = async ({ message = '', context = {} }) => {
 
   // General helpful guide
   return {
-    reply: `Hello! I am your **CivicPulse AI Assistant**. I can help you with:\n\n- **Tracking an issue:** Give me your Complaint ID (e.g. \`CP-20261101-ABCD\`).\n- **Reporting a problem:** Tell me about any pothole, garbage dump, water leak, or broken streetlight (Hindi/English dono me bata sakte hain!).\n- **City transparency stats:** Ask for city resolution rates or department performance.\n- **Emergency & Helplines:** Ask for helpline numbers.\n\nHow can I help you today?`,
+    reply: `Hello! I am your **NagarMitra Assistant**. I can help you with:\n\n- **Tracking an issue:** Give me your Complaint ID (e.g. \`CP-20261101-ABCD\`).\n- **Reporting a problem:** Tell me about any pothole, garbage dump, water leak, or broken streetlight (Hindi/English dono me bata sakte hain!).\n- **City transparency stats:** Ask for city resolution rates or department performance.\n- **Emergency & Helplines:** Ask for helpline numbers.\n\nHow can I help you today?`,
     toolCalls: [],
     toolResults: [],
     draftComplaint: null,

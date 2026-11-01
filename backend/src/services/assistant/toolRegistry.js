@@ -239,7 +239,7 @@ export const executeTool = async (toolName, params = {}, context = {}) => {
           inProgressComplaints: inProgress,
           pendingComplaints: underReview,
           resolutionRate: `${resolutionRate}%`,
-          statusSummary: `CivicPulse AI has recorded ${total} grievances citywide, with ${resolved} resolved (${resolutionRate}% resolution efficiency).`,
+          statusSummary: `NagarMitra has recorded ${total} grievances citywide, with ${resolved} resolved (${resolutionRate}% resolution efficiency).`,
         };
       }
 

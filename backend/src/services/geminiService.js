@@ -207,7 +207,7 @@ export const analyzeComplaintWithGemini = async ({
   const ai = new GoogleGenAI({ apiKey });
 
   // System instruction prompt
-  const systemPrompt = `You are CivicPulse AI, a municipal infrastructure intelligence and civic grievance analysis engine.
+  const systemPrompt = `You are NagarMitra AI, a municipal infrastructure intelligence and civic grievance analysis engine.
 Your task is to analyze civic complaints submitted by citizens, consisting of a citizen description and often a field photograph.
 You must assess both the photograph and description together objectively.
 

@@ -98,7 +98,7 @@ export const registerCitizen = async (req, res, next) => {
     try {
       await CitizenNotification.create({
         citizenUserId: newUser._id,
-        title: 'Welcome to CivicPulse AI',
+        title: 'Welcome to NagarMitra',
         message: 'Your personal citizen dashboard is ready. Report issues, follow neighborhood initiatives, and track resolution timelines in real time.',
         type: 'announcement',
       });
@@ -120,7 +120,7 @@ export const registerCitizen = async (req, res, next) => {
 
     return res.status(201).json({
       success: true,
-      message: 'Citizen registration successful. Welcome to CivicPulse AI.',
+      message: 'Citizen registration successful. Welcome to NagarMitra.',
       token,
       user: {
         id: newUser._id,

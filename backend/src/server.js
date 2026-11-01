@@ -47,10 +47,10 @@ app.use((req, res, next) => {
 
 // Root health-check / ping
 app.get('/', (req, res) => {
-  res.json({ message: 'CivicPulse AI API server is running.' });
+  res.json({ message: 'NagarMitra API server is running.' });
 });
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'CivicPulse AI Backend API' });
+  res.json({ status: 'ok', service: 'NagarMitra Backend API' });
 });
 
 // API Routes
