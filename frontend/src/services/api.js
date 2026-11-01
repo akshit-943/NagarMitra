@@ -4,15 +4,19 @@ import axios from 'axios';
 const resolveBaseUrl = () => {
   const envUrl = import.meta.env.VITE_API_BASE_URL;
   if (envUrl && envUrl.trim() !== '') {
-    if (typeof window !== 'undefined' && envUrl.startsWith('http')) {
+    let cleanUrl = envUrl.trim().replace(/\/+$/, '');
+    if (typeof window !== 'undefined' && cleanUrl.startsWith('http')) {
       if (window.location.hostname === '127.0.0.1') {
-        return envUrl.replace('localhost', '127.0.0.1');
-      }
-      if (window.location.hostname === 'localhost') {
-        return envUrl.replace('127.0.0.1', 'localhost');
+        cleanUrl = cleanUrl.replace('localhost', '127.0.0.1');
+      } else if (window.location.hostname === 'localhost') {
+        cleanUrl = cleanUrl.replace('127.0.0.1', 'localhost');
       }
     }
-    return envUrl;
+    // Ensure production base URL points to the API namespace (/api)
+    if (cleanUrl.startsWith('http') && !cleanUrl.endsWith('/api')) {
+      cleanUrl = `${cleanUrl}/api`;
+    }
+    return cleanUrl;
   }
   return '/api';
 };
@@ -27,7 +31,7 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000,
+  timeout: 45000,
 });
 
 // Request interceptor to attach JWT token when authentication is active

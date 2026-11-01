@@ -10,30 +10,77 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const allowedOrigins = [
+
+// Parse configured client origins (supports comma-separated list and normalizes trailing slashes)
+const configuredOrigins = (process.env.CLIENT_URL || '')
+  .split(',')
+  .map((url) => url.trim().replace(/\/+$/, ''))
+  .filter(Boolean);
+
+const defaultAllowedOrigins = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://localhost:5000',
   'http://127.0.0.1:5000',
-  process.env.CLIENT_URL,
-].filter(Boolean);
+  ...configuredOrigins,
+];
 
-// Middleware
-app.use(cors({
+const isOriginAllowed = (origin) => {
+  if (!origin) return true; // Allow mobile apps, curl, postman, and server-to-server calls
+
+  const normalizedOrigin = origin.trim().replace(/\/+$/, '');
+
+  // 1. Explicitly configured origins (including CLIENT_URL and local ports)
+  if (defaultAllowedOrigins.includes(normalizedOrigin)) {
+    return true;
+  }
+
+  // 2. Any local development origin on any port
+  if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(normalizedOrigin)) {
+    return true;
+  }
+
+  // 3. Deployed Vercel domains (*.vercel.app including preview and production deployments)
+  if (/^https:\/\/[a-z0-9\-]+(\.[a-z0-9\-]+)*\.vercel\.app$/i.test(normalizedOrigin)) {
+    return true;
+  }
+
+  // 4. Deployed Render backend self-origin
+  if (/^https:\/\/[a-z0-9\-]+\.onrender\.com$/i.test(normalizedOrigin)) {
+    return true;
+  }
+
+  return false;
+};
+
+const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (
-      allowedOrigins.includes(origin) ||
-      /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
-    ) {
-      return callback(null, true);
+    if (isOriginAllowed(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, false);
     }
-    return callback(new Error(`Origin ${origin} not allowed by CORS`));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Verification-Token', 'x-verification-token', 'x-mock-ai'],
-}));
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'X-Verification-Token',
+    'x-verification-token',
+    'x-mock-ai',
+    'Accept',
+    'Origin',
+    'X-Requested-With',
+    'Cache-Control',
+    'Pragma',
+  ],
+  optionsSuccessStatus: 204,
+};
+
+// Middleware
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
