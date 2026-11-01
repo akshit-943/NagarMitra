@@ -12,7 +12,6 @@ import {
   AlertCircle,
   Building2,
   KeyRound,
-  ArrowRight,
   Info,
 } from 'lucide-react';
 
@@ -52,12 +51,6 @@ export default function AuthorityLoginPage() {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const fillDemoCredentials = (id) => {
-    setAuthorityId(id);
-    setPassword('CivicPulse@2026');
-    setErrorMessage(null);
   };
 
   // Ensure view starts strictly at top of viewport on mount
@@ -157,38 +150,6 @@ export default function AuthorityLoginPage() {
           <p className="text-[11px] text-[#4B4E54] leading-relaxed">
             Public users cannot self-register as authorities. Accounts are provisioned through a controlled municipal vetting process. Citizens can freely browse issues and submit complaints on the Citizen Portal without login.
           </p>
-        </div>
-
-        {/* Demo Fast-Login Strip for Testing & Evaluation */}
-        <div className="pt-2 border-t border-[#F0EFEA] space-y-2">
-          <span className="text-[11px] font-semibold text-[#7E828B] uppercase tracking-wider block">
-            Simulated Authority Accounts (Local Testing):
-          </span>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-            <button
-              type="button"
-              onClick={() => fillDemoCredentials('AUTH-ADMIN-01')}
-              className="text-left p-2.5 rounded-xl bg-white border border-[#E6E5DE] hover:border-[#8CA81F] hover:bg-[#F2F8D5]/30 transition-all flex items-center justify-between group"
-            >
-              <div>
-                <span className="font-semibold text-[#191B1D] block">AUTH-ADMIN-01</span>
-                <span className="text-[10px] text-[#7E828B]">Municipal Admin</span>
-              </div>
-              <ArrowRight className="w-3 h-3 text-[#7E828B] group-hover:text-[#191B1D] group-hover:translate-x-0.5 transition-all" />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => fillDemoCredentials('OFF-MPW-01')}
-              className="text-left p-2.5 rounded-xl bg-white border border-[#E6E5DE] hover:border-[#8CA81F] hover:bg-[#F2F8D5]/30 transition-all flex items-center justify-between group"
-            >
-              <div>
-                <span className="font-semibold text-[#191B1D] block">OFF-MPW-01</span>
-                <span className="text-[10px] text-[#7E828B]">Public Works Officer</span>
-              </div>
-              <ArrowRight className="w-3 h-3 text-[#7E828B] group-hover:text-[#191B1D] group-hover:translate-x-0.5 transition-all" />
-            </button>
-          </div>
         </div>
       </Card>
 
