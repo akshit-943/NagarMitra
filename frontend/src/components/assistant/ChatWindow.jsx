@@ -72,7 +72,7 @@ export default function ChatWindow({
             </div>
             <p className="text-[10px] text-[#A2A6B0] flex items-center gap-1">
               <Sparkles className="w-2.5 h-2.5 text-[#D2E873]" />
-              <span>Gemini Infrastructure Intelligence</span>
+              <span>AI Municipal Intelligence</span>
             </p>
           </div>
         </div>

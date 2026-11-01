@@ -809,7 +809,7 @@ export default function ComplaintDetailsModal({ complaintId, isOpen, onClose }) 
                 </div>
                 <div>
                   <h4 className="font-semibold text-xs text-[#191B1D] tracking-wide uppercase">
-                    AI Analysis &bull; Gemini Intelligence
+                    AI Analysis
                   </h4>
                   <p className="text-[10px] text-[#7E828B]">
                     Multimodal visual &amp; textual infrastructure assessment
@@ -851,7 +851,7 @@ export default function ComplaintDetailsModal({ complaintId, isOpen, onClose }) 
             {ai?.analysisStatus === 'Processing' ? (
               <div className="py-6 text-center text-xs text-[#7E828B] space-y-2">
                 <RefreshCw className="w-5 h-5 animate-spin mx-auto text-[#8CA81F]" />
-                <p>Gemini vision model is examining field photograph and description...</p>
+                <p>AI vision model is examining field photograph and description...</p>
               </div>
             ) : ai?.analysisStatus === 'Failed' ? (
               <div className="p-3.5 rounded-xl bg-[#FBEAE9] border border-[#F5C2BE] text-xs text-[#9E2B25] space-y-2">
@@ -859,7 +859,7 @@ export default function ComplaintDetailsModal({ complaintId, isOpen, onClose }) 
                   <AlertTriangle className="w-4 h-4 text-[#D93F36]" />
                   <span>AI Analysis Failed</span>
                 </div>
-                <p className="text-[11px]">{ai.error || 'Gemini could not analyze the image or description.'}</p>
+                <p className="text-[11px]">{ai.error || 'AI could not analyze the image or description.'}</p>
                 <Button
                   variant="outline"
                   size="sm"
@@ -867,7 +867,7 @@ export default function ComplaintDetailsModal({ complaintId, isOpen, onClose }) 
                   disabled={isRetryingAi}
                   icon={RefreshCw}
                 >
-                  {isRetryingAi ? 'Retrying Analysis...' : 'Retry Gemini Analysis'}
+                  {isRetryingAi ? 'Retrying Analysis...' : 'Retry AI Analysis'}
                 </Button>
               </div>
             ) : ai?.analysisStatus === 'Completed' ? (
@@ -1013,7 +1013,7 @@ export default function ComplaintDetailsModal({ complaintId, isOpen, onClose }) 
                     <div>
                       <p className="font-semibold text-xs">Human Verification Flagged</p>
                       <p className="text-[11px] text-[#865917]/90 mt-0.5">
-                        Gemini flagged this incident for physical on-site verification due to visual ambiguity, safety threshold, or non-standard infrastructure parameters.
+                        AI flagged this incident for physical on-site verification due to visual ambiguity, safety threshold, or non-standard infrastructure parameters.
                       </p>
                     </div>
                   </div>
@@ -1021,7 +1021,7 @@ export default function ComplaintDetailsModal({ complaintId, isOpen, onClose }) 
 
                 {/* Model Metadata footer */}
                 <div className="flex items-center justify-between text-[10px] text-[#A2A6B0] pt-1">
-                  <span>Engine: {ai.modelUsed || 'gemini-3-flash-preview'} &bull; Multimodal GenAI</span>
+                  <span>Engine: {ai.modelUsed || 'AI Neural Engine'} &bull; Multimodal GenAI</span>
                   <span>
                     Analyzed: {ai.analyzedAt ? new Date(ai.analyzedAt).toLocaleTimeString() : 'Recent'}
                   </span>
@@ -1037,7 +1037,7 @@ export default function ComplaintDetailsModal({ complaintId, isOpen, onClose }) 
                   disabled={isRetryingAi}
                   icon={Sparkles}
                 >
-                  {isRetryingAi ? 'Analyzing...' : 'Run Gemini Analysis Now'}
+                  {isRetryingAi ? 'Analyzing...' : 'Run AI Analysis Now'}
                 </Button>
               </div>
             )}

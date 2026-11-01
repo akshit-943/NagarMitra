@@ -952,7 +952,7 @@ export default function MasterIssueDetailsPage({ masterIssueId, onBack }) {
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-[#8CA81F]" />
                     <span className="font-semibold text-xs text-[#191B1D]">
-                      AI Visual Resolution Assessment (Gemini Multimodal)
+                      AI Visual Resolution Assessment
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -984,7 +984,7 @@ export default function MasterIssueDetailsPage({ masterIssueId, onBack }) {
                         onClick={handleTriggerAiAssessment}
                         disabled={isAssessingResolution}
                         className="inline-flex items-center gap-1 text-[10px] font-medium text-[#5A7314] hover:text-[#3E520A] bg-white border border-[#E6E5DE] px-2 py-0.5 rounded-md hover:bg-[#F9F9F6] transition-colors disabled:opacity-50"
-                        title="Re-run Gemini AI comparative analysis on before/after photos"
+                        title="Re-run AI comparative analysis on before/after photos"
                       >
                         <RefreshCw className={`w-2.5 h-2.5 ${isAssessingResolution ? 'animate-spin' : ''}`} />
                         <span>{isAssessingResolution ? 'Analyzing...' : 'Re-evaluate'}</span>
