@@ -1133,38 +1133,6 @@ export default function MasterIssueDetailsPage({ masterIssueId, onBack }) {
                 </div>
               </div>
             </div>
-
-            {/* Test citizen verification action box (for demonstration & testing) */}
-            <div className="p-4 rounded-2xl bg-[#F9F9F6] border border-[#E6E5DE] space-y-2">
-              <span className="text-xs font-semibold text-[#191B1D] block">
-                Citizen Feedback Action (Test Console):
-              </span>
-              <div className="flex flex-col sm:flex-row items-center gap-2">
-                <input
-                  type="text"
-                  placeholder="Optional citizen verification feedback (e.g. Pothole filled smoothly, verified on morning commute)..."
-                  value={verificationComment}
-                  onChange={(e) => setVerificationComment(e.target.value)}
-                  className="flex-1 bg-white border border-[#E6E5DE] rounded-xl px-3 py-1.5 text-xs text-[#191B1D] focus:outline-none focus:border-[#191B1D]"
-                />
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => handleVerificationVote('Confirmed')}
-                    disabled={isVerifying}
-                    className="px-3 py-1.5 rounded-full bg-[#3E520A] text-white text-xs font-medium hover:bg-[#2F3E07] disabled:opacity-50 cursor-pointer flex items-center gap-1"
-                  >
-                    <Check className="w-3.5 h-3.5" /> Confirm Resolved
-                  </button>
-                  <button
-                    onClick={() => handleVerificationVote('Disputed')}
-                    disabled={isVerifying}
-                    className="px-3 py-1.5 rounded-full bg-[#9E2A2B] text-white text-xs font-medium hover:bg-[#7D2223] disabled:opacity-50 cursor-pointer flex items-center gap-1"
-                  >
-                    <XCircle className="w-3.5 h-3.5" /> Still Exists
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* 8. CONFIDENTIAL INTERNAL AUTHORITY NOTES (PHASE 5 REQUIREMENT) */}
