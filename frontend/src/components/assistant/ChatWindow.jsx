@@ -53,7 +53,7 @@ export default function ChatWindow({
     <div
       role="dialog"
       aria-label="CivicPulse Conversational Assistant"
-      className="fixed bottom-20 right-4 sm:right-6 w-[92vw] sm:w-[410px] h-[580px] max-h-[80vh] bg-white border border-[#E6E5DE] rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200"
+      className="fixed bottom-5 sm:bottom-6 right-4 sm:right-6 w-[92vw] sm:w-[410px] h-[580px] max-h-[82vh] bg-white border border-[#E6E5DE] rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200"
     >
       {/* Header */}
       <div className="px-4 py-3 bg-[#191B1D] text-white flex items-center justify-between border-b border-[#2C3035]">
