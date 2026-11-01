@@ -1,6 +1,6 @@
-# CivicPulse AI
+# NagarMitra
 
-CivicPulse AI is an intelligent civic reporting, tracking, and analytics platform.
+NagarMitra is an intelligent civic reporting, tracking, and analytics platform.
 
 This repository contains the decoupled full-stack architecture initialized for the project foundation phase.
 
