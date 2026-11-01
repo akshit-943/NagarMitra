@@ -218,10 +218,6 @@ export default function PublicTransparencyDashboard() {
       <section className="space-y-4">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-[#E6E5DE]">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F2F8D5] border border-[#D2E873] text-xs font-medium text-[#3E520A] mb-2">
-              <span className="w-2 h-2 rounded-full bg-[#8CA81F] animate-pulse" />
-              Public Accountability Console &bull; Phase 6 Live
-            </div>
             <h1 className="font-editorial text-3xl sm:text-4xl text-[#191B1D] font-normal tracking-tight">
               Civic Transparency &amp; Public Impact Intelligence
             </h1>

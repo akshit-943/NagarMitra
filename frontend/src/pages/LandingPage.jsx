@@ -94,11 +94,6 @@ export default function LandingPage() {
       {/* 1. HERO SECTION (Split Editorial Layout) */}
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         <div className="lg:col-span-7 space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F2F8D5] border border-[#D2E873] text-xs font-medium text-[#3E520A]">
-            <span className="w-2 h-2 rounded-full bg-[#8CA81F] animate-pulse" />
-            Civic Technology Platform &bull; v2.0
-          </div>
-
           <h1 className="font-editorial text-4xl sm:text-5xl lg:text-6xl text-[#191B1D] font-normal tracking-tight leading-[1.08]">
             Civic infrastructure intelligence for responsive cities.
           </h1>
