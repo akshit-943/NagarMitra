@@ -69,6 +69,8 @@ const corsOptions = {
     'X-Verification-Token',
     'x-verification-token',
     'x-mock-ai',
+    'x-citizen-id',
+    'X-Citizen-Id',
     'Accept',
     'Origin',
     'X-Requested-With',

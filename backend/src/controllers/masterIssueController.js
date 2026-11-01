@@ -157,7 +157,7 @@ export const getMasterIssueById = async (req, res, next) => {
       .lean();
 
     // Check citizen endorsement status
-    const citizenIdentifier = req.headers['x-citizen-id'] || req.ip;
+    const citizenIdentifier = req.query?.citizenId || req.headers['x-citizen-id'] || req.ip;
     const citizenHash = hashCitizenIdentifier(citizenIdentifier);
     let hasSupported = false;
     let hasVerified = false;

@@ -156,7 +156,7 @@ export const getMasterIssues = async (params = {}) => {
 export const getMasterIssueById = async (id) => {
   const citizenId = getClientCitizenId();
   const response = await apiClient.get(`/master-issues/${encodeURIComponent(id)}`, {
-    headers: { 'x-citizen-id': citizenId },
+    params: { citizenId },
   });
   return response.data;
 };
@@ -170,8 +170,7 @@ export const supportMasterIssue = async (id) => {
   const citizenId = getClientCitizenId();
   const response = await apiClient.post(
     `/master-issues/${encodeURIComponent(id)}/support`,
-    { citizenId },
-    { headers: { 'x-citizen-id': citizenId } }
+    { citizenId }
   );
   return response.data;
 };
@@ -257,9 +256,9 @@ export const verifyMasterIssueResolution = async (id, verificationData) => {
   const citizenId = getClientCitizenId();
   const response = await apiClient.post(
     `/master-issues/${encodeURIComponent(id)}/verify`,
-    verificationData,
     {
-      headers: { 'x-citizen-id': citizenId },
+      ...verificationData,
+      citizenId,
     }
   );
   return response.data;
