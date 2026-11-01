@@ -220,10 +220,10 @@ export default function CitizenDashboard() {
       </div>
 
       {/* 2. CITIZEN OVERVIEW STATS (CALCULATED FROM LIVE RECORDS) */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
         <Card variant="white" padding="default">
           <span className="text-xs text-[#7E828B] font-medium block">Total Live Registry</span>
-          <span className="font-editorial text-3xl text-[#191B1D] mt-1 block">
+          <span className="font-editorial text-2xl sm:text-3xl text-[#191B1D] mt-1 block">
             {pagination.total}
           </span>
           <span className="text-xs text-[#4B4E54] mt-1 block">Stored complaints</span>
@@ -231,7 +231,7 @@ export default function CitizenDashboard() {
 
         <Card variant="warm" padding="default">
           <span className="text-xs text-[#865917] font-semibold block">Pending Triage</span>
-          <span className="font-editorial text-3xl text-[#191B1D] mt-1 block">
+          <span className="font-editorial text-2xl sm:text-3xl text-[#191B1D] mt-1 block">
             {pendingCount}
           </span>
           <span className="text-xs text-[#865917] mt-1 block">Awaiting inspection</span>
@@ -239,7 +239,7 @@ export default function CitizenDashboard() {
 
         <Card variant="lime" padding="default">
           <span className="text-xs text-[#3E520A] font-semibold block">Active Unresolved</span>
-          <span className="font-editorial text-3xl text-[#191B1D] mt-1 block">
+          <span className="font-editorial text-2xl sm:text-3xl text-[#191B1D] mt-1 block">
             {activeCount}
           </span>
           <span className="text-xs text-[#3E520A] mt-1 block">Triage & field repair</span>
@@ -247,7 +247,7 @@ export default function CitizenDashboard() {
 
         <Card variant="sage" padding="default">
           <span className="text-xs text-[#365734] font-semibold block">Resolved</span>
-          <span className="font-editorial text-3xl text-[#191B1D] mt-1 block">
+          <span className="font-editorial text-2xl sm:text-3xl text-[#191B1D] mt-1 block">
             {resolvedCount}
           </span>
           <span className="text-xs text-[#365734] mt-1 block">Repairs completed</span>
@@ -256,7 +256,7 @@ export default function CitizenDashboard() {
 
       {/* 3. CONTROLS, SEARCH, AND VIEW TOGGLE */}
       <div className="space-y-3">
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           {/* Category Chips */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
             {categories.map((cat) => (
@@ -276,14 +276,14 @@ export default function CitizenDashboard() {
 
           {/* Search & View Toggle */}
           <div className="flex items-center gap-2">
-            <form onSubmit={handleSearchSubmit} className="relative">
+            <form onSubmit={handleSearchSubmit} className="relative flex-1 sm:flex-initial">
               <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#7E828B]" />
               <input
                 type="text"
                 placeholder="Search ID or street..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8 pr-3 py-1.5 text-xs bg-white border border-[#E6E5DE] rounded-full text-[#191B1D] placeholder-[#A2A6B0] focus:outline-none focus:border-[#191B1D] w-44 sm:w-52"
+                className="pl-8 pr-3 py-1.5 text-xs bg-white border border-[#E6E5DE] rounded-full text-[#191B1D] placeholder-[#A2A6B0] focus:outline-none focus:border-[#191B1D] w-full sm:w-52"
               />
             </form>
 
@@ -383,11 +383,11 @@ export default function CitizenDashboard() {
                 key={complaint.complaintId || complaint._id}
                 variant="white"
                 padding="default"
-                className="transition-all hover:border-[#191B1D]/40 space-y-3"
+                className="transition-all hover:border-[#191B1D]/40 space-y-3 overflow-hidden"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[11px] font-mono font-medium text-[#191B1D] bg-[#F0EFEA] px-2.5 py-0.5 rounded-md">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                    <span className="text-[11px] font-mono font-medium text-[#191B1D] bg-[#F0EFEA] px-2.5 py-0.5 rounded-md whitespace-nowrap">
                       {complaint.complaintId}
                     </span>
                     <Badge variant={getStatusBadgeVariant(complaint.status)} size="sm" dot>
@@ -397,18 +397,18 @@ export default function CitizenDashboard() {
                       {complaint.category}
                     </Badge>
                     {complaint.aiAnalysis?.analysisStatus === 'Completed' ? (
-                      <span className="text-[11px] font-mono text-[#3E520A] bg-[#E9F3C6] px-2 py-0.5 rounded-md flex items-center gap-1 font-medium border border-[#D2E873]">
+                      <span className="text-[11px] font-mono text-[#3E520A] bg-[#E9F3C6] px-2 py-0.5 rounded-md flex items-center gap-1 font-medium border border-[#D2E873] whitespace-nowrap">
                         <Sparkles className="w-3 h-3 text-[#5A7314]" />
                         AI Severity: {complaint.aiAnalysis.severityScore}/100 ({complaint.severity || complaint.aiAnalysis.severityLevel})
                       </span>
                     ) : complaint.aiAnalysis?.analysisStatus === 'Processing' ? (
-                      <span className="text-[11px] font-mono text-[#55478A] bg-[#ECE8F9] px-2 py-0.5 rounded-md flex items-center gap-1 animate-pulse border border-[#DDD7F4]">
+                      <span className="text-[11px] font-mono text-[#55478A] bg-[#ECE8F9] px-2 py-0.5 rounded-md flex items-center gap-1 animate-pulse border border-[#DDD7F4] whitespace-nowrap">
                         <Sparkles className="w-3 h-3 text-[#55478A]" />
                         AI Analyzing...
                       </span>
                     ) : null}
                     {complaint.masterIssueId && (
-                      <span className="text-[11px] font-mono text-[#55478A] bg-[#ECE8F9] px-2 py-0.5 rounded-md flex items-center gap-1 font-medium border border-[#DDD7F4]">
+                      <span className="text-[11px] font-mono text-[#55478A] bg-[#ECE8F9] px-2 py-0.5 rounded-md flex items-center gap-1 font-medium border border-[#DDD7F4] whitespace-nowrap">
                         <Layers className="w-3 h-3 text-[#55478A]" />
                         {complaint.masterIssueId}
                       </span>
@@ -419,12 +419,12 @@ export default function CitizenDashboard() {
                       </Badge>
                     )}
                     {complaint.imageUrl && (
-                      <span className="text-[11px] text-[#3E7295] flex items-center gap-1 font-medium">
+                      <span className="text-[11px] text-[#3E7295] flex items-center gap-1 font-medium whitespace-nowrap">
                         <ImageIcon className="w-3 h-3" /> Photo Attached
                       </span>
                     )}
                   </div>
-                  <span className="text-xs text-[#7E828B] flex items-center gap-1">
+                  <span className="text-xs text-[#7E828B] flex items-center gap-1 shrink-0">
                     <Clock className="w-3 h-3" />
                     {new Date(complaint.createdAt).toLocaleDateString()} at{' '}
                     {new Date(complaint.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -437,36 +437,36 @@ export default function CitizenDashboard() {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-[#E6E5DE] flex flex-wrap items-center justify-between gap-3 text-xs">
-                  <div className="flex items-center gap-4 text-[#7E828B]">
-                    <span className="flex items-center gap-1 text-[#191B1D] font-medium">
-                      <MapPin className="w-3.5 h-3.5 text-[#3E7295]" />
+                <div className="pt-3 border-t border-[#E6E5DE] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[#7E828B]">
+                    <span className="flex items-center gap-1 text-[#191B1D] font-medium break-words">
+                      <MapPin className="w-3.5 h-3.5 text-[#3E7295] shrink-0" />
                       {complaint.location?.address}
                     </span>
-                    <span>Routing: {complaint.department}</span>
+                    <span className="shrink-0">Routing: {complaint.department}</span>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     {complaint.masterIssueId && (
                       <>
                         {complaint.status === 'Resolved' || complaint.status === 'Resolution Submitted' ? (
                           verificationMap[complaint.masterIssueId] === 'Confirmed' ? (
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F3F8D8] border border-[#D2E873] text-[#3E520A] font-semibold text-xs">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F3F8D8] border border-[#D2E873] text-[#3E520A] font-semibold text-xs whitespace-nowrap">
                               <CheckCircle className="w-3.5 h-3.5 text-[#3E520A]" />
                               <span>Confirmed Resolved</span>
                             </span>
                           ) : verificationMap[complaint.masterIssueId] === 'Disputed' ? (
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FBE8E8] border border-[#F5C2BE] text-[#9E2A2B] font-semibold text-xs">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FBE8E8] border border-[#F5C2BE] text-[#9E2A2B] font-semibold text-xs whitespace-nowrap">
                               <AlertTriangle className="w-3.5 h-3.5 text-[#9E2A2B]" />
                               <span>Reported Still Exists</span>
                             </span>
                           ) : (
-                            <div className="inline-flex items-center gap-1.5 bg-[#F0EFEA] p-1 rounded-full border border-[#E6E5DE] text-xs">
+                            <div className="inline-flex flex-wrap items-center gap-1.5 bg-[#F0EFEA] p-1 rounded-full border border-[#E6E5DE] text-xs">
                               <span className="text-[10px] uppercase font-semibold text-[#7E828B] px-1 hidden sm:inline">Confirm Fix:</span>
                               <button
                                 onClick={() => handleVerifyResolution(complaint.masterIssueId, 'Confirmed')}
                                 disabled={verifyingMap[complaint.masterIssueId]}
-                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#3E520A] hover:bg-[#2F3E07] text-white font-semibold text-xs transition-colors disabled:opacity-50"
+                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#3E520A] hover:bg-[#2F3E07] text-white font-semibold text-xs transition-colors disabled:opacity-50 whitespace-nowrap"
                                 title="Confirm this civic issue has been resolved on site"
                               >
                                 <CheckCircle className="w-3.5 h-3.5" />
@@ -475,7 +475,7 @@ export default function CitizenDashboard() {
                               <button
                                 onClick={() => handleVerifyResolution(complaint.masterIssueId, 'Disputed')}
                                 disabled={verifyingMap[complaint.masterIssueId]}
-                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white hover:bg-[#FBE8E8] text-[#9E2A2B] border border-[#E6E5DE] font-semibold text-xs transition-colors disabled:opacity-50"
+                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white hover:bg-[#FBE8E8] text-[#9E2A2B] border border-[#E6E5DE] font-semibold text-xs transition-colors disabled:opacity-50 whitespace-nowrap"
                                 title="Report that this issue is NOT resolved / still exists"
                               >
                                 <AlertTriangle className="w-3.5 h-3.5" />
@@ -487,7 +487,7 @@ export default function CitizenDashboard() {
                           <button
                             onClick={() => handleQuickEndorse(complaint.masterIssueId)}
                             disabled={endorsingId === complaint.masterIssueId}
-                            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#191B1D] hover:bg-[#333] text-white font-medium text-xs transition-colors disabled:opacity-50"
+                            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#191B1D] hover:bg-[#333] text-white font-medium text-xs transition-colors disabled:opacity-50 whitespace-nowrap"
                             title="I am also affected by this issue"
                           >
                             <ThumbsUp className="w-3 h-3" />
@@ -503,7 +503,7 @@ export default function CitizenDashboard() {
                               toggleFollowIssue(complaint.masterIssueId);
                             }
                           }}
-                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-medium text-xs transition-colors border ${
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-medium text-xs transition-colors border whitespace-nowrap ${
                             followedIssues?.some((f) => (f.masterIssueId || f) === complaint.masterIssueId)
                               ? 'bg-[#F2F8D5] border-[#D2E873] text-[#3E520A]'
                               : 'bg-white border-[#E6E5DE] text-[#4B4E54] hover:border-[#191B1D]'
@@ -521,7 +521,7 @@ export default function CitizenDashboard() {
                     )}
                     <button
                       onClick={() => setSelectedComplaintId(complaint.complaintId)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F0EFEA] hover:bg-[#E6E5DE] text-[#191B1D] font-medium text-xs transition-colors"
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F0EFEA] hover:bg-[#E6E5DE] text-[#191B1D] font-medium text-xs transition-colors whitespace-nowrap"
                     >
                       <ExternalLink className="w-3 h-3" />
                       <span>Inspect Details &amp; Timeline</span>
