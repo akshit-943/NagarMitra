@@ -8,6 +8,7 @@ import {
   getComplaintStats,
   triggerComplaintAiAnalysis,
   getComplaintDuplicates,
+  enhanceDescription,
 } from '../controllers/complaintController.js';
 import { handleImageUpload } from '../middleware/upload.js';
 import { authenticateAuthority } from '../middleware/auth.js';
@@ -20,6 +21,9 @@ router.get('/stats', getComplaintStats);
 
 // Secure tracking route (must be before /:id)
 router.get('/track/:id', trackComplaint);
+
+// Optional AI description enhancement for speech-to-text dictation (must be before /:id)
+router.post('/enhance-description', enhanceDescription);
 
 // Collection routes
 router.post('/', handleImageUpload, optionalCitizenAuth, createComplaint);

@@ -120,6 +120,20 @@ export const triggerAiAnalysis = async (id) => {
   return response.data;
 };
 
+/**
+ * Optional AI description enhancement for speech-to-text dictation
+ * @param {string} text - Dictated or typed text
+ * @param {string} [category] - Optional category context
+ * @returns {Promise<Object>}
+ */
+export const enhanceDescriptionWithAi = async (text, category = '') => {
+  const response = await apiClient.post('/complaints/enhance-description', {
+    text,
+    category,
+  });
+  return response.data;
+};
+
 // ==========================================
 // PHASE 4 & 5: MASTER ISSUES & OPERATIONS
 // ==========================================

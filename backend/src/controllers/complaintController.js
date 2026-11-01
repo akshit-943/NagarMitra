@@ -10,7 +10,11 @@ import { isDbConnected } from '../config/db.js';
 import { generateComplaintId } from '../utils/generateId.js';
 import { uploadBufferToCloudinary, isCloudinaryConfigured } from '../config/cloudinary.js';
 import { validateStatusTransition } from '../utils/statusTransitions.js';
-import { analyzeComplaintWithGemini, getMockGeminiAnalysis } from '../services/geminiService.js';
+import {
+  analyzeComplaintWithGemini,
+  getMockGeminiAnalysis,
+  enhanceComplaintDescription,
+} from '../services/geminiService.js';
 import { syncComplaintToMasterIssue } from '../services/masterIssueService.js';
 import { evaluateSlaStatus } from '../services/slaService.js';
 import { maskPhoneNumber } from '../services/smsService.js';
@@ -932,5 +936,39 @@ export const getComplaintDuplicates = async (req, res, next) => {
     });
   } catch (err) {
     next(err);
+  }
+};
+
+/**
+ * @route   POST /api/complaints/enhance-description
+ * @desc    Optional AI description enhancement for speech-to-text dictation
+ * @access  Public (Citizen Form)
+ */
+export const enhanceDescription = async (req, res, next) => {
+  try {
+    const { text, category } = req.body || {};
+    if (!text || typeof text !== 'string' || text.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'A non-empty description string is required to enhance.',
+      });
+    }
+
+    const result = await enhanceComplaintDescription({
+      text: text.trim(),
+      category: typeof category === 'string' ? category : '',
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (err) {
+    console.error('❌ [enhanceDescription] Error:', err.message);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to enhance description.',
+      error: err.message,
+    });
   }
 };

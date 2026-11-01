@@ -425,3 +425,76 @@ export const validateAndNormalizeAiResponse = (raw, modelName) => {
     modelUsed: modelName,
   };
 };
+
+/**
+ * Optional AI Enhancement for dictated or typed civic complaint descriptions.
+ * Uses Gemini to polish grammar, fix transcription errors, and organize context
+ * while strictly preserving original meaning, facts, and avoiding exaggerated severity.
+ *
+ * @param {Object} params
+ * @param {string} params.text - Original dictated or typed text
+ * @param {string} [params.category] - Civic category for context
+ * @returns {Promise<{ enhancedText: string, originalText: string, notice?: string }>}
+ */
+export const enhanceComplaintDescription = async ({ text = '', category = '' }) => {
+  if (!text || text.trim().length === 0) {
+    return { enhancedText: text, originalText: text };
+  }
+
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey || apiKey.includes('placeholder')) {
+    // Graceful fallback if Gemini API key is not configured
+    return {
+      enhancedText: text.trim().replace(/\s+/g, ' '),
+      originalText: text,
+      notice: 'AI service unconfigured; original description preserved.',
+    };
+  }
+
+  const modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+  const ai = new GoogleGenAI({ apiKey });
+
+  const systemInstruction = `You are NagarMitra AI, a municipal grievance writing assistant for Indian cities.
+A citizen has dictated or written a civic grievance description.
+Your task:
+1. Fix speech-to-text transcription glitches, misheard phonetic words, and Indian civic terms (e.g., "kachra" -> garbage/litter, "naali" -> open drain/gutter, "sadak" -> road/pavement, "bijli" -> electricity/lighting).
+2. Correct grammar, punctuation, sentence structure, and readability.
+3. Organize the complaint clearly, concisely, and respectfully for municipal authorities.
+4. STRICT SAFETY RULES:
+   - Do NOT invent new facts, landmarks, numbers, or occurrences not mentioned by the citizen.
+   - Do NOT exaggerate severity or claim emergencies if not stated.
+   - Maintain the citizen's authentic meaning and intent.
+   - Output ONLY the polished description paragraph. Do NOT add any conversational preamble, markdown quotes, or notes.`;
+
+  const prompt = `Context Category: ${category || 'General Civic Issue'}
+Original Citizen Text:
+"""${text.trim()}"""`;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: modelName,
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      config: {
+        systemInstruction,
+        temperature: 0.2,
+      },
+    });
+
+    const enhanced = (response.text || '').trim();
+    if (enhanced && enhanced.length > 5) {
+      return {
+        enhancedText: enhanced,
+        originalText: text,
+      };
+    }
+    return { enhancedText: text, originalText: text };
+  } catch (error) {
+    console.warn('⚠️ [GeminiService] Could not enhance description via Gemini:', error.message);
+    return {
+      enhancedText: text.trim(),
+      originalText: text,
+      fallback: true,
+      notice: 'Could not reach AI enhancement; original text preserved.',
+    };
+  }
+};

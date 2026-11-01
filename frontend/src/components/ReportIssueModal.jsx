@@ -5,6 +5,7 @@ import Input from './ui/Input';
 import Select from './ui/Select';
 import Badge from './ui/Badge';
 import CivicMap from './CivicMap';
+import VoiceInput from './VoiceInput';
 import { useCivic } from '../context/CivicContext';
 import {
   searchGeocoding,
@@ -651,11 +652,26 @@ export default function ReportIssueModal({ isOpen, onClose }) {
             </div>
           </div>
 
-          {/* Description */}
+          {/* Description with Voice-Assisted Reporting */}
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-[#191B1D]">
-              Detailed Description &amp; Field Context * (min 10 characters)
-            </label>
+            <div className="flex items-center justify-between">
+              <label className="block text-xs font-semibold text-[#191B1D]">
+                Detailed Description &amp; Field Context * (min 10 characters)
+              </label>
+              <span className="text-[11px] text-[#7E828B]">
+                {formData.description.trim().length} chars
+              </span>
+            </div>
+
+            {/* Voice Input Controller */}
+            <VoiceInput
+              value={formData.description}
+              onChange={(newDescription) => setFormData({ ...formData, description: newDescription })}
+              category={formData.category}
+              disabled={isSubmitting}
+              isModalOpen={isOpen}
+            />
+
             <textarea
               rows={3}
               className="w-full rounded-xl bg-white border border-[#E6E5DE] focus:border-[#191B1D] px-3.5 py-2.5 text-xs text-[#191B1D] placeholder-[#A2A6B0] transition-colors focus:outline-none resize-none"
