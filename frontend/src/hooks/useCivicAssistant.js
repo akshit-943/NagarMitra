@@ -10,6 +10,15 @@ const WELCOME_MESSAGE = {
 };
 
 /**
+ * Helper to programmatically open the global NagarMitra AI Assistant from anywhere in the app
+ */
+export const openCivicAssistant = () => {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('open-civic-assistant'));
+  }
+};
+
+/**
  * Custom Hook: useCivicAssistant
  * Encapsulates assistant state, message sending, history synchronization, and error handling
  */
@@ -18,6 +27,18 @@ export function useCivicAssistant() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [roleContext, setRoleContext] = useState('guest');
+
+  // Listen for global open/toggle events from anywhere in the app (e.g. Landing Page hero button)
+  useEffect(() => {
+    const handleOpen = () => setIsOpen(true);
+    const handleToggle = () => setIsOpen((prev) => !prev);
+    window.addEventListener('open-civic-assistant', handleOpen);
+    window.addEventListener('toggle-civic-assistant', handleToggle);
+    return () => {
+      window.removeEventListener('open-civic-assistant', handleOpen);
+      window.removeEventListener('toggle-civic-assistant', handleToggle);
+    };
+  }, []);
 
   // Maintain stable conversation ID across component mounts
   const [conversationId, setConversationId] = useState(() => {

@@ -12,7 +12,10 @@ import {
   TrendingUp,
   Compass,
   ExternalLink,
+  Bot,
+  Sparkles,
 } from 'lucide-react';
+import { openCivicAssistant } from '../hooks/useCivicAssistant';
 import PublicTransparencyDashboard from './PublicTransparencyDashboard';
 
 export default function LandingPage() {
@@ -102,30 +105,53 @@ export default function LandingPage() {
             NagarMitra bridges residents and municipal departments with clarity. Report neighborhood concerns in seconds, track automated dispatch in real time, and monitor verifiable resolution metrics.
           </p>
 
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={() => setIsSubmitModalOpen(true)}
-              className="shadow-sm font-semibold"
-            >
-              Report an Issue
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => setActiveTab('citizen-entry')}
-            >
-              Get Started
-            </Button>
-            <Button
-              variant="ghost"
-              size="lg"
-              onClick={() => setActiveTab('public-map')}
-              className="text-[#4B4E54] hover:text-[#191B1D]"
-            >
-              Explore Public Map &rarr;
-            </Button>
+          <div className="space-y-3 pt-2">
+            <div className="flex flex-wrap items-center gap-3">
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => setIsSubmitModalOpen(true)}
+                className="shadow-sm font-semibold"
+              >
+                Report an Issue
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => setActiveTab('citizen-entry')}
+              >
+                Get Started
+              </Button>
+              <Button
+                variant="ghost"
+                size="lg"
+                onClick={() => setActiveTab('public-map')}
+                className="text-[#4B4E54] hover:text-[#191B1D]"
+              >
+                Explore Public Map &rarr;
+              </Button>
+            </div>
+
+            {/* AI Assistant Quick-Launch Button (Directly below Report an Issue) */}
+            <div className="pt-0.5">
+              <button
+                type="button"
+                onClick={openCivicAssistant}
+                className="group inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#191B1D] hover:bg-[#2C3035] text-white text-xs font-semibold shadow-md transition-all hover:scale-[1.02] active:scale-[0.98] border border-white/10 cursor-pointer"
+                title="Launch the NagarMitra Conversational AI Assistant"
+              >
+                <div className="relative w-6 h-6 rounded-full bg-[#D2E873] flex items-center justify-center text-[#191B1D]">
+                  <Bot className="w-3.5 h-3.5 text-[#191B1D]" />
+                  <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D2E873] opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                  </span>
+                </div>
+                <span>Ask NagarMitra AI Assistant</span>
+                <span className="text-[10px] text-[#A2A6B0] font-normal hidden sm:inline">&bull; 24/7 Grievance &amp; Telemetry Help</span>
+                <Sparkles className="w-3.5 h-3.5 text-[#D2E873] group-hover:rotate-12 transition-transform" />
+              </button>
+            </div>
           </div>
 
           <div className="pt-4 flex items-center gap-8 text-xs text-[#7E828B]">
