@@ -637,9 +637,9 @@ export default function ComplaintDetailsModal({ complaintId, isOpen, onClose }) 
                     After &bull; Municipal Resolution Evidence
                   </span>
                   <div className="rounded-xl overflow-hidden border border-[#E6E5DE] bg-[#F7F7F4] h-52 flex items-center justify-center">
-                    {masterIssue?.resolutionEvidence?.[0]?.url ? (
+                    {masterIssue?.resolutionEvidence?.length > 0 ? (
                       <img
-                        src={masterIssue.resolutionEvidence[0].url}
+                        src={masterIssue.resolutionEvidence[masterIssue.resolutionEvidence.length - 1].url}
                         alt="After Resolution"
                         className="w-full h-full object-cover"
                       />

@@ -908,25 +908,32 @@ export default function MasterIssueDetailsPage({ masterIssueId, onBack }) {
 
                 {resolutionEvidence.length > 0 ? (
                   <div className="space-y-2">
-                    <div
-                      className="aspect-4/3 rounded-xl overflow-hidden border border-[#D2E873] bg-black/5 cursor-pointer relative group"
-                      onClick={() => setPreviewImage(resolutionEvidence[0].url)}
-                    >
-                      <img
-                        src={resolutionEvidence[0].url}
-                        alt="After evidence"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                      />
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-medium gap-1">
-                        <Eye className="w-4 h-4" /> Click to enlarge
-                      </div>
-                    </div>
-                    <p className="text-[11px] text-[#3E520A] font-medium">
-                      {issue.resolutionDescription || 'Remediation completed by municipal field unit.'}
-                    </p>
-                    <span className="text-[10px] text-[#5A7314] block">
-                      Uploaded by: {resolutionEvidence[0].uploadedBy} &bull; {new Date(resolutionEvidence[0].uploadedAt).toLocaleDateString()}
-                    </span>
+                    {(() => {
+                      const latestEvidence = resolutionEvidence[resolutionEvidence.length - 1];
+                      return (
+                        <>
+                          <div
+                            className="aspect-4/3 rounded-xl overflow-hidden border border-[#D2E873] bg-black/5 cursor-pointer relative group"
+                            onClick={() => setPreviewImage(latestEvidence.url)}
+                          >
+                            <img
+                              src={latestEvidence.url}
+                              alt="After evidence"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                            />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-medium gap-1">
+                              <Eye className="w-4 h-4" /> Click to enlarge
+                            </div>
+                          </div>
+                          <p className="text-[11px] text-[#3E520A] font-medium">
+                            {issue.resolutionDescription || 'Remediation completed by municipal field unit.'}
+                          </p>
+                          <span className="text-[10px] text-[#5A7314] block">
+                            Uploaded by: {latestEvidence.uploadedBy} &bull; {new Date(latestEvidence.uploadedAt).toLocaleDateString()}
+                          </span>
+                        </>
+                      );
+                    })()}
                   </div>
                 ) : (
                   <div className="aspect-4/3 rounded-xl border border-dashed border-[#D2E873] flex flex-col items-center justify-center text-xs text-[#3E520A] p-4 text-center bg-white/40">

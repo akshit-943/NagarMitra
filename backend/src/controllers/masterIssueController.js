@@ -679,8 +679,8 @@ export const uploadResolutionEvidenceEndpoint = async (req, res, next) => {
       });
     }
 
-    // Append evidence
-    masterIssue.resolutionEvidence.push(...uploadedEvidence);
+    // Replace existing resolution evidence with the newly submitted evidence
+    masterIssue.resolutionEvidence = uploadedEvidence;
     if (finalDescription) {
       masterIssue.resolutionDescription = finalDescription;
     }
@@ -890,7 +890,10 @@ export const assessResolutionEndpoint = async (req, res, next) => {
       }
     }
 
-    const afterImageUrl = masterIssue.resolutionEvidence[0]?.url || null;
+    const afterImageUrl =
+      masterIssue.resolutionEvidence[masterIssue.resolutionEvidence.length - 1]?.url ||
+      masterIssue.resolutionEvidence[0]?.url ||
+      null;
 
     const assessment = await compareResolutionEvidence({
       beforeImageUrl,
