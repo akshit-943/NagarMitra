@@ -438,35 +438,37 @@ export default function CitizenDashboard() {
                 </div>
 
                 <div className="pt-3 border-t border-[#E6E5DE] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[#7E828B]">
-                    <span className="flex items-center gap-1 text-[#191B1D] font-medium break-words">
+                  <div className="min-w-0 flex-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-[#7E828B]">
+                    <span className="flex items-center gap-1.5 text-[#191B1D] font-medium min-w-0 max-w-full sm:max-w-md truncate" title={complaint.location?.address}>
                       <MapPin className="w-3.5 h-3.5 text-[#3E7295] shrink-0" />
-                      {complaint.location?.address}
+                      <span className="truncate">{complaint.location?.address}</span>
                     </span>
-                    <span className="shrink-0">Routing: {complaint.department}</span>
+                    <span className="shrink-0 text-[#7E828B]">
+                      Routing: <span className="text-[#4B4E54] font-medium">{complaint.department}</span>
+                    </span>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2">
+                  <div className="shrink-0 flex items-center gap-2 flex-wrap sm:flex-nowrap">
                     {complaint.masterIssueId && (
                       <>
                         {complaint.status === 'Resolved' || complaint.status === 'Resolution Submitted' ? (
                           verificationMap[complaint.masterIssueId] === 'Confirmed' ? (
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F3F8D8] border border-[#D2E873] text-[#3E520A] font-semibold text-xs whitespace-nowrap">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F3F8D8] border border-[#D2E873] text-[#3E520A] font-semibold text-xs whitespace-nowrap shadow-xs">
                               <CheckCircle className="w-3.5 h-3.5 text-[#3E520A]" />
                               <span>Confirmed Resolved</span>
                             </span>
                           ) : verificationMap[complaint.masterIssueId] === 'Disputed' ? (
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FBE8E8] border border-[#F5C2BE] text-[#9E2A2B] font-semibold text-xs whitespace-nowrap">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FBE8E8] border border-[#F5C2BE] text-[#9E2A2B] font-semibold text-xs whitespace-nowrap shadow-xs">
                               <AlertTriangle className="w-3.5 h-3.5 text-[#9E2A2B]" />
                               <span>Reported Still Exists</span>
                             </span>
                           ) : (
-                            <div className="inline-flex flex-wrap items-center gap-1.5 bg-[#F0EFEA] p-1 rounded-full border border-[#E6E5DE] text-xs">
+                            <div className="inline-flex items-center gap-1.5 bg-[#F0EFEA] p-1 rounded-full border border-[#E6E5DE] text-xs">
                               <span className="text-[10px] uppercase font-semibold text-[#7E828B] px-1 hidden sm:inline">Confirm Fix:</span>
                               <button
                                 onClick={() => handleVerifyResolution(complaint.masterIssueId, 'Confirmed')}
                                 disabled={verifyingMap[complaint.masterIssueId]}
-                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#3E520A] hover:bg-[#2F3E07] text-white font-semibold text-xs transition-colors disabled:opacity-50 whitespace-nowrap"
+                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#3E520A] hover:bg-[#2F3E07] text-white font-semibold text-xs transition-colors disabled:opacity-50 whitespace-nowrap shadow-xs"
                                 title="Confirm this civic issue has been resolved on site"
                               >
                                 <CheckCircle className="w-3.5 h-3.5" />
@@ -475,7 +477,7 @@ export default function CitizenDashboard() {
                               <button
                                 onClick={() => handleVerifyResolution(complaint.masterIssueId, 'Disputed')}
                                 disabled={verifyingMap[complaint.masterIssueId]}
-                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white hover:bg-[#FBE8E8] text-[#9E2A2B] border border-[#E6E5DE] font-semibold text-xs transition-colors disabled:opacity-50 whitespace-nowrap"
+                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white hover:bg-[#FBE8E8] text-[#9E2A2B] border border-[#E6E5DE] font-semibold text-xs transition-colors disabled:opacity-50 whitespace-nowrap shadow-xs"
                                 title="Report that this issue is NOT resolved / still exists"
                               >
                                 <AlertTriangle className="w-3.5 h-3.5" />
@@ -487,10 +489,10 @@ export default function CitizenDashboard() {
                           <button
                             onClick={() => handleQuickEndorse(complaint.masterIssueId)}
                             disabled={endorsingId === complaint.masterIssueId}
-                            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#191B1D] hover:bg-[#333] text-white font-medium text-xs transition-colors disabled:opacity-50 whitespace-nowrap"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#191B1D] hover:bg-[#333] text-white font-medium text-xs transition-colors disabled:opacity-50 whitespace-nowrap shadow-xs"
                             title="I am also affected by this issue"
                           >
-                            <ThumbsUp className="w-3 h-3" />
+                            <ThumbsUp className="w-3.5 h-3.5" />
                             <span>I'm Affected</span>
                           </button>
                         )}
@@ -503,14 +505,14 @@ export default function CitizenDashboard() {
                               toggleFollowIssue(complaint.masterIssueId);
                             }
                           }}
-                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-medium text-xs transition-colors border whitespace-nowrap ${
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium text-xs transition-colors border whitespace-nowrap shadow-xs ${
                             followedIssues?.some((f) => (f.masterIssueId || f) === complaint.masterIssueId)
                               ? 'bg-[#F2F8D5] border-[#D2E873] text-[#3E520A]'
                               : 'bg-white border-[#E6E5DE] text-[#4B4E54] hover:border-[#191B1D]'
                           }`}
                           title="Follow this civic issue for notifications"
                         >
-                          <Bookmark className="w-3 h-3" />
+                          <Bookmark className="w-3.5 h-3.5" />
                           <span>
                             {followedIssues?.some((f) => (f.masterIssueId || f) === complaint.masterIssueId)
                               ? 'Following'
@@ -521,9 +523,9 @@ export default function CitizenDashboard() {
                     )}
                     <button
                       onClick={() => setSelectedComplaintId(complaint.complaintId)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F0EFEA] hover:bg-[#E6E5DE] text-[#191B1D] font-medium text-xs transition-colors whitespace-nowrap"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F0EFEA] hover:bg-[#E6E5DE] text-[#191B1D] font-medium text-xs transition-colors whitespace-nowrap border border-[#E6E5DE] shadow-xs"
                     >
-                      <ExternalLink className="w-3 h-3" />
+                      <ExternalLink className="w-3.5 h-3.5" />
                       <span>Inspect Details &amp; Timeline</span>
                     </button>
                   </div>
