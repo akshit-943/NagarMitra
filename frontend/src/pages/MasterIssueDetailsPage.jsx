@@ -95,7 +95,7 @@ export default function MasterIssueDetailsPage({ masterIssueId, onBack }) {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isAssessingResolution, setIsAssessingResolution] = useState(false);
 
-  const fetchDetails = async () => {
+  const fetchDetails = async (retryCount = 2) => {
     if (!masterIssueId) {
       setError('No Master Issue ID provided.');
       setLoading(false);
@@ -117,12 +117,21 @@ export default function MasterIssueDetailsPage({ masterIssueId, onBack }) {
       }
     } catch (err) {
       console.error('Error fetching master issue details:', err);
+      const isNetworkErr = err.message === 'Network Error' || !err.status;
+      if (isNetworkErr && retryCount > 0) {
+        console.log(`Retrying fetchDetails for ${masterIssueId} (${retryCount} retries remaining)...`);
+        setTimeout(() => fetchDetails(retryCount - 1), 2500);
+        return;
+      }
       setError(
-        err.message ||
-        `Unable to load master issue '${masterIssueId}'. It may have been removed or the ID is invalid.`
+        isNetworkErr
+          ? 'Network connection interrupted. The server may be waking up from standby or unreachable. Please click Try Again.'
+          : (err.message || `Unable to load master issue '${masterIssueId}'. It may have been removed or the ID is invalid.`)
       );
     } finally {
-      setLoading(false);
+      if (retryCount === 0 || !error) {
+        setLoading(false);
+      }
     }
   };
 
@@ -472,7 +481,7 @@ export default function MasterIssueDetailsPage({ masterIssueId, onBack }) {
               variant="outline"
               size="sm"
               icon={RefreshCw}
-              onClick={fetchDetails}
+              onClick={() => fetchDetails(2)}
             >
               Try Again
             </Button>

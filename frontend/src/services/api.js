@@ -1,23 +1,47 @@
 import axios from 'axios';
 
-// Dynamically resolve API URL matching current browser hostname to eliminate cross-origin mismatch
+// Dynamically resolve API URL matching current browser environment
 const resolveBaseUrl = () => {
+  const isBrowser = typeof window !== 'undefined';
+  const isLocalHost = isBrowser && (
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1' ||
+    window.location.hostname === '[::1]'
+  );
+
   const envUrl = import.meta.env.VITE_API_BASE_URL;
+
+  // 1. When running in a deployed browser environment (e.g., Vercel, Netlify, custom domain)
+  if (isBrowser && !isLocalHost) {
+    // If an explicit secure HTTPS API base URL is provided and not pointing to localhost, use it
+    if (envUrl && envUrl.trim().startsWith('https://') && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
+      let cleanUrl = envUrl.trim().replace(/\/+$/, '');
+      if (!cleanUrl.endsWith('/api')) {
+        cleanUrl = `${cleanUrl}/api`;
+      }
+      return cleanUrl;
+    }
+    // Fallback to live production Render backend to avoid mixed-content blocks or broken localhost requests
+    return 'https://nagarmitra-tela.onrender.com/api';
+  }
+
+  // 2. When running in local development (localhost / 127.0.0.1)
   if (envUrl && envUrl.trim() !== '') {
     let cleanUrl = envUrl.trim().replace(/\/+$/, '');
-    if (typeof window !== 'undefined' && cleanUrl.startsWith('http')) {
+    if (isBrowser && cleanUrl.startsWith('http')) {
       if (window.location.hostname === '127.0.0.1') {
         cleanUrl = cleanUrl.replace('localhost', '127.0.0.1');
       } else if (window.location.hostname === 'localhost') {
         cleanUrl = cleanUrl.replace('127.0.0.1', 'localhost');
       }
     }
-    // Ensure production base URL points to the API namespace (/api)
     if (cleanUrl.startsWith('http') && !cleanUrl.endsWith('/api')) {
       cleanUrl = `${cleanUrl}/api`;
     }
     return cleanUrl;
   }
+
+  // Default to relative /api (handled by Vite dev proxy in local dev)
   return '/api';
 };
 
