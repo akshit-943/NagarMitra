@@ -227,16 +227,16 @@ export default function PublicTransparencyDashboard() {
           </div>
 
           <div className="flex items-center gap-2.5 flex-wrap">
-            <Button
-              variant="outline"
-              size="sm"
-              icon={RefreshCw}
+            <button
+              type="button"
               onClick={fetchData}
               disabled={loading}
-              className={loading ? 'animate-spin' : ''}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border border-[#E6E5DE] bg-white hover:bg-[#F0EFEA] text-[#191B1D] active:scale-[0.98] transition-all disabled:opacity-60 shadow-xs"
+              title="Refresh Telemetry Data"
             >
-              {loading ? 'Refreshing...' : 'Refresh Telemetry'}
-            </Button>
+              <RefreshCw className={`w-3.5 h-3.5 text-[#7E828B] ${loading ? 'animate-spin text-[#191B1D]' : ''}`} />
+              <span>{loading ? 'Refreshing...' : 'Refresh Telemetry'}</span>
+            </button>
 
             <button
               type="button"
